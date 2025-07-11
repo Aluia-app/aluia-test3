@@ -1166,7 +1166,8 @@
                     this.recognition.maxAlternatives = 1;
 
                     this.recognition.onstart = () => {
-                        console.log('🎤 Microfono attivo');
+                        console.log('🎤 Microfono attivo - evento onstart');
+                        this.isListening = true; // Assicura sincronizzazione stato
                         this.micBtn.classList.add('active');
                         this.micStatus.textContent = '🎧 Sempre in ascolto... Parla liberamente!';
                         this.micStatus.className = 'mic-status listening';
@@ -1201,30 +1202,33 @@
                         }
                     };
 
-                    // ORIGINALE: Gestione riavvio automatico con delay di 1.5 secondi
+                    // ORIGINALE: Gestione riavvio automatico con delay aumentato a 3 secondi
                     this.recognition.onend = () => {
-                        console.log('🔇 Riconoscimento terminato');
+                        console.log('🔇 Riconoscimento terminato - evento onend');
+                        this.isListening = false; // Reset stato
                         
                         if (this.restartTimeout) {
                             clearTimeout(this.restartTimeout);
                         }
                         
-                        if (this.autoRestartEnabled && !this.isProcessing) {
+                        if (this.autoRestartEnabled && !this.isProcessing && !this.isPlayingAudio) {
                             this.restartTimeout = setTimeout(() => {
-                                if (this.autoRestartEnabled && !this.isProcessing) {
+                                if (this.autoRestartEnabled && !this.isProcessing && !this.isPlayingAudio) {
                                     try {
+                                        console.log('🔄 Tentativo riavvio riconoscimento...');
                                         this.recognition.start();
-                                        console.log('🔄 Riconoscimento riavviato automaticamente dopo 1.5s');
+                                        console.log('🔄 Riconoscimento riavviato automaticamente dopo 3s');
                                     } catch (e) {
                                         console.error('Errore riavvio automatico:', e);
+                                        // Riprova dopo altri 3 secondi
                                         this.restartTimeout = setTimeout(() => {
-                                            if (this.autoRestartEnabled) {
+                                            if (this.autoRestartEnabled && !this.isProcessing) {
                                                 this.startListeningAuto();
                                             }
-                                        }, 1500);
+                                        }, 3000);
                                     }
                                 }
-                            }, 1500);
+                            }, 3000); // AUMENTATO da 1500ms a 3000ms
                         } else {
                             this.micBtn.classList.remove('active');
                             this.micStatus.textContent = 'Microfono sempre attivo';
@@ -1232,7 +1236,7 @@
                         }
                     };
 
-                    // ORIGINALE: Gestione errori
+                    // MIGLIORATO: Gestione errori con tempi aumentati per "aborted"
                     this.recognition.onerror = (event) => {
                         console.error('❌ Errore riconoscimento:', event.error);
                         
@@ -1256,11 +1260,33 @@
                                 this.showToast('Verifica la connessione internet', 'error');
                                 break;
                             case 'aborted':
-                                console.log('⚠️ Riconoscimento aborted, riavvio automatico...');
+                                console.log('⚠️ Riconoscimento aborted, aspetto 5 secondi prima del riavvio...');
+                                // Per errore aborted, aspetta 5 secondi invece di riavviare subito
+                                if (this.restartTimeout) {
+                                    clearTimeout(this.restartTimeout);
+                                }
+                                if (this.autoRestartEnabled) {
+                                    this.restartTimeout = setTimeout(() => {
+                                        if (this.autoRestartEnabled && !this.isProcessing && !this.isPlayingAudio) {
+                                            console.log('🔄 Riavvio dopo errore aborted...');
+                                            this.startListeningAuto();
+                                        }
+                                    }, 5000); // 5 secondi per errore aborted
+                                }
                                 return;
                             default:
-                                this.micStatus.textContent = '❌ Errore: ' + event.error;
-                                console.log('⚠️ Errore generico, riavvio automatico...');
+                                console.log('⚠️ Errore generico:', event.error, 'aspetto 3 secondi...');
+                                // Per errori generici, aspetta 3 secondi
+                                if (this.restartTimeout) {
+                                    clearTimeout(this.restartTimeout);
+                                }
+                                if (this.autoRestartEnabled) {
+                                    this.restartTimeout = setTimeout(() => {
+                                        if (this.autoRestartEnabled && !this.isProcessing && !this.isPlayingAudio) {
+                                            this.startListeningAuto();
+                                        }
+                                    }, 3000);
+                                }
                                 return;
                         }
                         
@@ -1403,31 +1429,46 @@
                 this.toggleAutoRestart();
             }
 
-            // ORIGINALE
+            // MIGLIORATO: Avvio riconoscimento con controlli di stato
             startListening() {
+                // Controlla se già in ascolto
+                if (this.isListening) {
+                    console.log('⚠️ Riconoscimento già attivo, salto avvio');
+                    return;
+                }
+
                 try {
                     this.isListening = true;
                     this.isProcessing = false;
                     this.transcription.textContent = 'Microfono sempre attivo - parla liberamente...';
+                    
+                    console.log('🎤 Avvio riconoscimento...');
                     this.recognition.start();
-                    console.log('🎤 Riconoscimento avviato');
+                    console.log('🎤 Riconoscimento avviato con successo');
                 } catch (e) {
                     console.error('❌ Errore avvio riconoscimento:', e);
+                    this.isListening = false;
+                    
                     if (e.message.includes('already started')) {
+                        console.log('⚠️ Riconoscimento già avviato, fermalo e riprova...');
                         this.recognition.stop();
-                        setTimeout(() => this.startListening(), 1500);
+                        setTimeout(() => {
+                            if (this.autoRestartEnabled) {
+                                this.startListening();
+                            }
+                        }, 3000); // Aspetta 3 secondi se già avviato
                     } else {
                         this.showToast('Errore avvio riconoscimento vocale', 'error');
-                        this.isListening = false;
                         if (this.autoRestartEnabled) {
-                            setTimeout(() => this.startListeningAuto(), 1500);
+                            setTimeout(() => this.startListeningAuto(), 3000);
                         }
                     }
                 }
             }
 
-            // ORIGINALE
+            // MIGLIORATO: Stop riconoscimento con reset stato
             stopListening() {
+                console.log('🔇 Fermando riconoscimento...');
                 this.isListening = false;
                 this.autoRestartEnabled = false;
                 
@@ -1439,6 +1480,7 @@
                 if (this.recognition) {
                     try {
                         this.recognition.stop();
+                        console.log('🔇 Riconoscimento fermato');
                     } catch (e) {
                         console.warn('⚠️ Errore stop riconoscimento:', e);
                     }
@@ -1446,7 +1488,6 @@
                 this.micBtn.classList.remove('active');
                 this.micStatus.textContent = 'Microfono disattivato - clicca per riattivare';
                 this.micStatus.className = 'mic-status';
-                console.log('🔇 Riconoscimento fermato');
             }
 
             // ORIGINALE con AGGIUNTA chiamata audio
@@ -1753,16 +1794,60 @@
             }
         };
 
+        // AGGIUNTO: Funzione di reset completo per problemi persistenti
+        window.resetMic = () => {
+            console.log('🔄 Reset completo microfono...');
+            if (window.aluia) {
+                // Ferma tutto
+                window.aluia.autoRestartEnabled = false;
+                window.aluia.isListening = false;
+                window.aluia.isProcessing = false;
+                
+                if (window.aluia.restartTimeout) {
+                    clearTimeout(window.aluia.restartTimeout);
+                    window.aluia.restartTimeout = null;
+                }
+                
+                if (window.aluia.recognition) {
+                    try {
+                        window.aluia.recognition.stop();
+                    } catch (e) {}
+                }
+                
+                // Aspetta 2 secondi e riavvia
+                setTimeout(() => {
+                    console.log('✅ Riavviando microfono dopo reset...');
+                    window.aluia.autoRestartEnabled = true;
+                    window.aluia.startListeningAuto();
+                }, 2000);
+            }
+        };
+
         window.debugMic = () => {
-            console.log('🔍 Debug microfono:');
-            console.log('- Recognition:', window.aluia?.recognition);
-            console.log('- isListening:', window.aluia?.isListening);
-            console.log('- isProcessing:', window.aluia?.isProcessing);
-            console.log('- autoRestartEnabled:', window.aluia?.autoRestartEnabled);
-            console.log('- audioEnabled:', window.aluia?.audioEnabled);
-            console.log('- isPlayingAudio:', window.aluia?.isPlayingAudio);
-            if (window.aluia?.recognition) {
-                console.log('- Recognition state: active');
+            console.log('🔍 Debug microfono COMPLETO:');
+            if (window.aluia) {
+                console.log('- Recognition object:', window.aluia.recognition ? '✅ Presente' : '❌ Mancante');
+                console.log('- isListening:', window.aluia.isListening);
+                console.log('- isProcessing:', window.aluia.isProcessing);
+                console.log('- autoRestartEnabled:', window.aluia.autoRestartEnabled);
+                console.log('- audioEnabled:', window.aluia.audioEnabled);
+                console.log('- isPlayingAudio:', window.aluia.isPlayingAudio);
+                console.log('- restartTimeout:', window.aluia.restartTimeout ? 'Attivo' : 'Inattivo');
+                
+                // Test permessi microfono
+                navigator.permissions?.query({ name: 'microphone' }).then(result => {
+                    console.log('- Permesso microfono:', result.state);
+                }).catch(() => {
+                    console.log('- Permesso microfono: Non verificabile');
+                });
+                
+                if (window.aluia.recognition) {
+                    console.log('- Speech Recognition supportato: ✅');
+                } else {
+                    console.log('- Speech Recognition supportato: ❌');
+                }
+            } else {
+                console.log('❌ AluIA non inizializzata');
             }
         };
 
@@ -1772,6 +1857,7 @@
         console.log('- testVoice(): Testa trascrizione → chat');
         console.log('- testAudio(): Testa ElevenLabs TTS');
         console.log('- debugMic(): Debug stato microfono e audio');
+        console.log('- resetMic(): Reset completo microfono (se problemi)');
     </script>
 </body>
 </html>
