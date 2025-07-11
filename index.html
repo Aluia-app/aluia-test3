@@ -86,7 +86,7 @@
             transform: scale(1.1);
         }
 
-        /* AGGIUNTO: Controlli audio discreti */
+        /* Controlli audio discreti */
         .audio-controls {
             position: absolute;
             top: 25px;
@@ -222,7 +222,7 @@
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
-        /* AGGIUNTO: Indicatore quando Alu parla */
+        /* Indicatore quando Alu parla */
         .mic-button.speaking {
             background: linear-gradient(135deg, #FF9800, #FFB74D);
             animation: speaking 1s infinite;
@@ -255,7 +255,7 @@
             border-color: rgba(255, 152, 0, 0.3);
         }
 
-        /* AGGIUNTO: Stato quando Alu parla */
+        /* Stato quando Alu parla */
         .mic-status.speaking {
             background: rgba(255, 243, 224, 0.9);
             color: #FF9800;
@@ -757,7 +757,7 @@
     
     <div class="container">
         <div class="header">
-            <!-- AGGIUNTO: Controlli audio discreti -->
+            <!-- Controlli audio discreti -->
             <div class="audio-controls">
                 <button class="audio-control-btn" id="audioToggle" title="Attiva/Disattiva audio">🔊</button>
                 <button class="audio-control-btn" id="volumeControl" title="Controllo volume">🎚️</button>
@@ -918,7 +918,7 @@
 
         class AluIA {
             constructor() {
-                // Variabili di stato - ORIGINALI (non modificate)
+                // Variabili di stato - ORIGINALI
                 this.isListening = false;
                 this.recognition = null;
                 this.apiKey = localStorage.getItem('aluia_api_key') || '';
@@ -929,12 +929,16 @@
                 this.autoRestartEnabled = true;
                 this.restartTimeout = null;
                 
-                // AGGIUNTO: Solo variabili audio ElevenLabs
+                // Variabili audio ElevenLabs
                 this.audioEnabled = localStorage.getItem('aluia_audio_enabled') !== 'false';
                 this.audioVolume = parseFloat(localStorage.getItem('aluia_audio_volume')) || 0.8;
                 this.currentAudio = null;
                 this.isPlayingAudio = false;
                 this.elevenLabsVoiceId = 'YOUR_VOICE_ID_HERE'; // Sostituire con ID voce reale
+                
+                // NUOVO: Contatore errori per prevenire loop infiniti
+                this.abortedErrorCount = 0;
+                this.maxAbortedErrors = 3;
 
                 // Inizializzazione
                 this.initElements();
@@ -943,7 +947,7 @@
                 this.setupEvents();
                 this.updateUI();
                 this.applyTheme();
-                this.initAudioControls(); // AGGIUNTO
+                this.initAudioControls();
 
                 console.log('✅ AluIA inizializzata');
                 this.showToast('AluIA pronta! Microfono sempre attivo.', 'success');
@@ -954,7 +958,7 @@
             }
 
             initElements() {
-                // Elementi principali - ORIGINALI
+                // Elementi principali
                 this.micBtn = document.getElementById('micBtn');
                 this.micStatus = document.getElementById('micStatus');
                 this.transcription = document.getElementById('transcription');
@@ -966,11 +970,11 @@
                 this.typingIndicator = document.getElementById('typingIndicator');
                 this.permissionHelper = document.getElementById('permissionHelper');
 
-                // AGGIUNTO: Solo elementi controlli audio
+                // Elementi controlli audio
                 this.audioToggle = document.getElementById('audioToggle');
                 this.volumeControl = document.getElementById('volumeControl');
 
-                // Modal elements - ORIGINALI
+                // Modal elements
                 this.adminBtn = document.getElementById('adminBtn');
                 this.privacyBtn = document.getElementById('privacyBtn');
                 this.adminModal = document.getElementById('adminModal');
@@ -979,7 +983,7 @@
                 console.log('📋 Elementi DOM inizializzati');
             }
 
-            // AGGIUNTO: Solo funzioni audio ElevenLabs
+            // Funzioni audio ElevenLabs
             initAudioControls() {
                 this.updateAudioControls();
                 console.log('🔊 Controlli audio inizializzati');
@@ -1053,7 +1057,7 @@
                 this.stopCurrentAudio();
 
                 try {
-                    console.log('🗣️ Sintesi audio ElevenLabs...');
+                    console.log('🗣️ Tentativo sintesi audio ElevenLabs...');
                     
                     this.micBtn.classList.add('speaking');
                     this.micStatus.textContent = '🗣️ Alu sta parlando...';
@@ -1071,6 +1075,13 @@
                     });
 
                     if (!response.ok) {
+                        if (response.status === 404) {
+                            console.log('⚠️ Endpoint ElevenLabs non configurato, disabilito audio');
+                            this.audioEnabled = false;
+                            localStorage.setItem('aluia_audio_enabled', 'false');
+                            this.updateAudioControls();
+                            throw new Error('Endpoint audio non configurato');
+                        }
                         throw new Error(`Errore API ElevenLabs: ${response.status}`);
                     }
 
@@ -1111,7 +1122,10 @@
                     this.isPlayingAudio = false;
                     this.micBtn.classList.remove('speaking');
                     
-                    this.showToast('Ci scusiamo per il problema tecnico che sarà risolto con la massima brevità', 'warning');
+                    // Non mostrare toast per endpoint mancante
+                    if (!error.message.includes('non configurato')) {
+                        this.showToast('Ci scusiamo per il problema tecnico che sarà risolto con la massima brevità', 'warning');
+                    }
                     
                     if (this.autoRestartEnabled) {
                         this.micStatus.textContent = '🎧 Sempre in ascolto... Parla liberamente!';
@@ -1120,7 +1134,6 @@
                 }
             }
 
-            // RESTO DEL CODICE ORIGINALE INTATTO
             async checkMicrophonePermission() {
                 try {
                     const result = await navigator.permissions.query({ name: 'microphone' });
@@ -1167,7 +1180,8 @@
 
                     this.recognition.onstart = () => {
                         console.log('🎤 Microfono attivo - evento onstart');
-                        this.isListening = true; // Assicura sincronizzazione stato
+                        this.isListening = true;
+                        this.abortedErrorCount = 0; // Reset contatore errori quando funziona
                         this.micBtn.classList.add('active');
                         this.micStatus.textContent = '🎧 Sempre in ascolto... Parla liberamente!';
                         this.micStatus.className = 'mic-status listening';
@@ -1192,20 +1206,17 @@
 
                         if (finalTranscript.trim()) {
                             console.log('🗣️ Trascrizione finale:', finalTranscript.trim());
-                            // AGGIUNTO: Interrompi audio se l'utente parla
                             this.stopCurrentAudio();
                             
-                            // ASSICURA che la trascrizione venga aggiunta alla chat
                             setTimeout(() => {
                                 this.processVoiceInput(finalTranscript.trim());
                             }, 100);
                         }
                     };
 
-                    // ORIGINALE: Gestione riavvio automatico con delay aumentato a 3 secondi
                     this.recognition.onend = () => {
                         console.log('🔇 Riconoscimento terminato - evento onend');
-                        this.isListening = false; // Reset stato
+                        this.isListening = false;
                         
                         if (this.restartTimeout) {
                             clearTimeout(this.restartTimeout);
@@ -1220,7 +1231,6 @@
                                         console.log('🔄 Riconoscimento riavviato automaticamente dopo 3s');
                                     } catch (e) {
                                         console.error('Errore riavvio automatico:', e);
-                                        // Riprova dopo altri 3 secondi
                                         this.restartTimeout = setTimeout(() => {
                                             if (this.autoRestartEnabled && !this.isProcessing) {
                                                 this.startListeningAuto();
@@ -1228,7 +1238,7 @@
                                         }, 3000);
                                     }
                                 }
-                            }, 3000); // AUMENTATO da 1500ms a 3000ms
+                            }, 3000);
                         } else {
                             this.micBtn.classList.remove('active');
                             this.micStatus.textContent = 'Microfono sempre attivo';
@@ -1236,7 +1246,6 @@
                         }
                     };
 
-                    // MIGLIORATO: Gestione errori con tempi aumentati per "aborted"
                     this.recognition.onerror = (event) => {
                         console.error('❌ Errore riconoscimento:', event.error);
                         
@@ -1260,8 +1269,28 @@
                                 this.showToast('Verifica la connessione internet', 'error');
                                 break;
                             case 'aborted':
-                                console.log('⚠️ Riconoscimento aborted, aspetto 5 secondi prima del riavvio...');
-                                // Per errore aborted, aspetta 5 secondi invece di riavviare subito
+                                this.abortedErrorCount++;
+                                console.log(`⚠️ Riconoscimento aborted (${this.abortedErrorCount}/${this.maxAbortedErrors})`);
+                                
+                                if (this.abortedErrorCount >= this.maxAbortedErrors) {
+                                    console.log('🛑 Troppi errori aborted consecutivi, FERMO il microfono per 30 secondi');
+                                    this.autoRestartEnabled = false;
+                                    this.micStatus.textContent = '⏸️ Microfono in pausa (troppi errori)';
+                                    this.micStatus.className = 'mic-status';
+                                    this.micBtn.classList.remove('active');
+                                    
+                                    this.showToast('Microfono in pausa per problemi tecnici', 'warning');
+                                    
+                                    // Reset dopo 30 secondi
+                                    setTimeout(() => {
+                                        console.log('🔄 Reset automatico dopo 30 secondi');
+                                        this.abortedErrorCount = 0;
+                                        this.autoRestartEnabled = true;
+                                        this.startListeningAuto();
+                                    }, 30000);
+                                    return;
+                                }
+                                
                                 if (this.restartTimeout) {
                                     clearTimeout(this.restartTimeout);
                                 }
@@ -1271,12 +1300,11 @@
                                             console.log('🔄 Riavvio dopo errore aborted...');
                                             this.startListeningAuto();
                                         }
-                                    }, 5000); // 5 secondi per errore aborted
+                                    }, 10000);
                                 }
                                 return;
                             default:
                                 console.log('⚠️ Errore generico:', event.error, 'aspetto 3 secondi...');
-                                // Per errori generici, aspetta 3 secondi
                                 if (this.restartTimeout) {
                                     clearTimeout(this.restartTimeout);
                                 }
@@ -1305,7 +1333,7 @@
             }
 
             setupEvents() {
-                // Microfono - ORIGINALE
+                // Microfono
                 if (this.micBtn) {
                     this.micBtn.addEventListener('click', () => {
                         console.log('🎤 Click microfono - toggle riavvio automatico');
@@ -1313,7 +1341,7 @@
                     });
                 }
 
-                // AGGIUNTO: Solo eventi controlli audio
+                // Eventi controlli audio
                 if (this.audioToggle) {
                     this.audioToggle.addEventListener('click', () => {
                         this.toggleAudio();
@@ -1326,7 +1354,7 @@
                     });
                 }
 
-                // Chat - ORIGINALE
+                // Chat
                 if (this.sendBtn) {
                     this.sendBtn.addEventListener('click', () => {
                         console.log('📤 Click invio');
@@ -1344,12 +1372,12 @@
                     });
                 }
 
-                // Theme - ORIGINALE
+                // Theme
                 if (this.themeToggle) {
                     this.themeToggle.addEventListener('click', () => this.toggleTheme());
                 }
 
-                // Modals - ORIGINALE
+                // Modals
                 if (this.privacyBtn) {
                     this.privacyBtn.addEventListener('click', () => this.showPrivacyModal());
                 }
@@ -1358,14 +1386,14 @@
                     this.adminBtn.addEventListener('click', () => this.showAdminModal());
                 }
 
-                // Close modals - ORIGINALE
+                // Close modals
                 document.getElementById('closePrivacy')?.addEventListener('click', () => this.hidePrivacyModal());
                 document.getElementById('acceptPrivacy')?.addEventListener('click', () => this.hidePrivacyModal());
                 document.getElementById('closeAdmin')?.addEventListener('click', () => this.hideAdminModal());
                 document.getElementById('cancelAdmin')?.addEventListener('click', () => this.hideAdminModal());
                 document.getElementById('saveAdmin')?.addEventListener('click', () => this.saveAdminConfig());
 
-                // Admin access - ORIGINALE
+                // Admin access
                 document.addEventListener('keydown', (e) => {
                     if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                         const code = prompt('Codice amministratore:');
@@ -1381,7 +1409,6 @@
                 console.log('✅ Eventi configurati');
             }
 
-            // ORIGINALE
             toggleAutoRestart() {
                 this.autoRestartEnabled = !this.autoRestartEnabled;
                 
@@ -1394,7 +1421,6 @@
                 }
             }
 
-            // ORIGINALE
             async startListeningAuto() {
                 if (!this.recognition) {
                     this.showToast('Riconoscimento vocale non disponibile', 'error');
@@ -1424,14 +1450,11 @@
                 }
             }
 
-            // ORIGINALE
             async toggleMicrophone() {
                 this.toggleAutoRestart();
             }
 
-            // MIGLIORATO: Avvio riconoscimento con controlli di stato
             startListening() {
-                // Controlla se già in ascolto
                 if (this.isListening) {
                     console.log('⚠️ Riconoscimento già attivo, salto avvio');
                     return;
@@ -1456,7 +1479,7 @@
                             if (this.autoRestartEnabled) {
                                 this.startListening();
                             }
-                        }, 3000); // Aspetta 3 secondi se già avviato
+                        }, 3000);
                     } else {
                         this.showToast('Errore avvio riconoscimento vocale', 'error');
                         if (this.autoRestartEnabled) {
@@ -1466,7 +1489,6 @@
                 }
             }
 
-            // MIGLIORATO: Stop riconoscimento con reset stato
             stopListening() {
                 console.log('🔇 Fermando riconoscimento...');
                 this.isListening = false;
@@ -1490,7 +1512,6 @@
                 this.micStatus.className = 'mic-status';
             }
 
-            // ORIGINALE con AGGIUNTA chiamata audio
             async processVoiceInput(text) {
                 if (this.isProcessing || !text.trim()) {
                     console.log('⚠️ Elaborazione saltata:', { isProcessing: this.isProcessing, textEmpty: !text.trim() });
@@ -1503,7 +1524,6 @@
                 this.micStatus.textContent = '🤔 Elaborando... (microfono sempre attivo)';
                 this.micStatus.className = 'mic-status processing';
                 
-                // ASSICURA che il messaggio venga aggiunto alla chat
                 try {
                     this.addMessage('user', text);
                     console.log('✅ Messaggio utente aggiunto alla chat');
@@ -1524,7 +1544,6 @@
                 }
             }
 
-            // ORIGINALE
             sendMessage() {
                 const message = this.chatInput.value.trim();
                 if (!message) {
@@ -1538,7 +1557,6 @@
                 this.sendToAssistant(message);
             }
 
-            // ORIGINALE con AGGIUNTA chiamata audio
             async sendToAssistant(message) {
                 this.showTyping();
                 
@@ -1586,7 +1604,6 @@
                         this.statusBar.className = 'status-bar connected';
                         this.addMessage('assistant', reply);
                         
-                        // AGGIUNTO: Sintetizza audio solo se microfono attivo
                         if (this.autoRestartEnabled && this.audioEnabled) {
                             await this.speakText(reply);
                         }
@@ -1608,7 +1625,7 @@
                     }
                 }
                 
-                // Modalità demo - ORIGINALE
+                // Modalità demo
                 this.hideTyping();
                 this.statusBar.textContent = '⚠️ Modalità Demo';
                 this.statusBar.className = 'status-bar';
@@ -1616,7 +1633,6 @@
                 const demoReply = this.getDemoResponse(message);
                 this.addMessage('assistant', demoReply);
                 
-                // AGGIUNTO: Sintetizza audio demo solo se microfono attivo
                 if (this.autoRestartEnabled && this.audioEnabled) {
                     await this.speakText(demoReply);
                 }
@@ -1624,7 +1640,6 @@
                 console.log('💡 Risposta demo inviata');
             }
 
-            // RESTO DELLE FUNZIONI ORIGINALI INTATTE
             getDemoResponse(message) {
                 const msg = message.toLowerCase();
                 
@@ -1762,7 +1777,7 @@
             window.aluia = new AluIA();
         });
 
-        // Funzioni di test per debug
+        // Funzioni di test e debug
         window.testMic = () => {
             console.log('🧪 Test microfono...');
             if (window.aluia) {
@@ -1778,15 +1793,6 @@
             }
         };
 
-        // AGGIUNTO: Test audio
-        window.testAudio = () => {
-            console.log('🧪 Test audio...');
-            if (window.aluia) {
-                window.aluia.speakText("Questo è un test audio di AluIA. Come va?");
-            }
-        };
-
-        // AGGIUNTO: Test trascrizione vocale
         window.testVoice = () => {
             console.log('🧪 Test trascrizione vocale...');
             if (window.aluia) {
@@ -1794,14 +1800,51 @@
             }
         };
 
-        // AGGIUNTO: Funzione di reset completo per problemi persistenti
-        window.resetMic = () => {
-            console.log('🔄 Reset completo microfono...');
+        window.testAudio = () => {
+            console.log('🧪 Test audio...');
             if (window.aluia) {
-                // Ferma tutto
+                window.aluia.speakText("Questo è un test audio di AluIA. Come va?");
+            }
+        };
+
+        // Funzione di EMERGENZA per fermare loop infiniti
+        window.stopMic = () => {
+            console.log('🛑 STOP EMERGENZA microfono...');
+            if (window.aluia) {
                 window.aluia.autoRestartEnabled = false;
                 window.aluia.isListening = false;
                 window.aluia.isProcessing = false;
+                window.aluia.abortedErrorCount = 999;
+                
+                if (window.aluia.restartTimeout) {
+                    clearTimeout(window.aluia.restartTimeout);
+                    window.aluia.restartTimeout = null;
+                }
+                
+                if (window.aluia.recognition) {
+                    try {
+                        window.aluia.recognition.stop();
+                        window.aluia.recognition.abort();
+                    } catch (e) {}
+                }
+                
+                window.aluia.micBtn.classList.remove('active');
+                window.aluia.micStatus.textContent = '🛑 Microfono fermato manualmente';
+                window.aluia.micStatus.className = 'mic-status';
+                
+                window.aluia.showToast('Microfono fermato - usa resetMic() per riavviare', 'warning');
+                console.log('✅ Microfono fermato completamente');
+            }
+        };
+
+        // Funzione di reset completo
+        window.resetMic = () => {
+            console.log('🔄 Reset completo microfono...');
+            if (window.aluia) {
+                window.aluia.autoRestartEnabled = false;
+                window.aluia.isListening = false;
+                window.aluia.isProcessing = false;
+                window.aluia.abortedErrorCount = 0;
                 
                 if (window.aluia.restartTimeout) {
                     clearTimeout(window.aluia.restartTimeout);
@@ -1814,12 +1857,13 @@
                     } catch (e) {}
                 }
                 
-                // Aspetta 2 secondi e riavvia
                 setTimeout(() => {
                     console.log('✅ Riavviando microfono dopo reset...');
                     window.aluia.autoRestartEnabled = true;
                     window.aluia.startListeningAuto();
-                }, 2000);
+                }, 3000);
+                
+                window.aluia.showToast('Microfono resettato', 'success');
             }
         };
 
@@ -1833,8 +1877,8 @@
                 console.log('- audioEnabled:', window.aluia.audioEnabled);
                 console.log('- isPlayingAudio:', window.aluia.isPlayingAudio);
                 console.log('- restartTimeout:', window.aluia.restartTimeout ? 'Attivo' : 'Inattivo');
+                console.log('- abortedErrorCount:', window.aluia.abortedErrorCount + '/' + window.aluia.maxAbortedErrors);
                 
-                // Test permessi microfono
                 navigator.permissions?.query({ name: 'microphone' }).then(result => {
                     console.log('- Permesso microfono:', result.state);
                 }).catch(() => {
@@ -1845,6 +1889,10 @@
                     console.log('- Speech Recognition supportato: ✅');
                 } else {
                     console.log('- Speech Recognition supportato: ❌');
+                }
+                
+                if (window.aluia.abortedErrorCount > 0) {
+                    console.log('⚠️ RACCOMANDAZIONE: Usa resetMic() per resettare gli errori');
                 }
             } else {
                 console.log('❌ AluIA non inizializzata');
@@ -1857,6 +1905,7 @@
         console.log('- testVoice(): Testa trascrizione → chat');
         console.log('- testAudio(): Testa ElevenLabs TTS');
         console.log('- debugMic(): Debug stato microfono e audio');
+        console.log('- stopMic(): FERMA microfono (emergenza)');
         console.log('- resetMic(): Reset completo microfono (se problemi)');
     </script>
 </body>
