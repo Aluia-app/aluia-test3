@@ -2112,4 +2112,54 @@
                 console.log('🔍 Audio playing:', window.aluia.isPlayingAudio);
                 console.log('🔍 API configured:', window.aluia.isApiConfigured);
                 console.log('🔍 Language:', window.aluia.detectedLanguage);
-                console.log('🔍 Selected device:', window.alu
+                console.log('🔍 Selected device:', window.aluia.selectedDeviceId);
+                console.log('🔍 Device type:', window.aluia.deviceType);
+                console.log('🔍 Available devices:', window.aluia.availableDevices.length);
+            }
+        };
+
+        window.resetMic = () => {
+            if (window.aluia) {
+                window.aluia.stopMicrophone();
+                window.aluia.resetErrorCount();
+                window.aluia.showToast('Microphone reset', 'success');
+            }
+        };
+
+        window.testAudio = () => {
+            if (window.aluia) {
+                window.aluia.speakText('Test audio from AluIA. How are you?');
+            }
+        };
+
+        window.testVoice = () => {
+            if (window.aluia) {
+                window.aluia.processVoiceInput('This is a voice transcription test');
+            }
+        };
+
+        window.switchLanguage = (lang) => {
+            if (window.aluia && translations[lang]) {
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.location.href = url.toString();
+            }
+        };
+
+        window.listDevices = () => {
+            if (window.aluia) {
+                console.log('🎤 Available microphone devices:');
+                window.aluia.availableDevices.forEach((device, index) => {
+                    const selected = device.deviceId === window.aluia.selectedDeviceId ? ' ← SELECTED' : '';
+                    const type = window.aluia.classifyDevice(device.label);
+                    console.log(`${index + 1}. [${type.toUpperCase()}] ${device.label}${selected}`);
+                });
+            }
+        };
+
+        console.log('✅ AluIA Multilingual + Smart Microphone loaded');
+        console.log('🌍 Available languages: it, en, pt, es');
+        console.log('Debug commands: micStatus(), resetMic(), testAudio(), testVoice(), listDevices(), switchLanguage(lang)');
+    </script>
+</body>
+</html>
