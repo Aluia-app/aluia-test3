@@ -53,12 +53,6 @@
             margin-bottom: 15px;
         }
 
-        .dark-mode .header h1 {
-            background: linear-gradient(135deg, #90CAF9, #E3F2FD);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .header p {
             color: #5C6BC0;
             font-size: 1.3em;
@@ -86,52 +80,6 @@
             transform: scale(1.1);
         }
 
-        .audio-controls {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .audio-control-btn {
-            background: rgba(25, 118, 210, 0.1);
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .audio-control-btn:hover {
-            background: rgba(25, 118, 210, 0.2);
-            transform: scale(1.05);
-        }
-
-        .audio-control-btn.active {
-            background: rgba(76, 175, 80, 0.2);
-        }
-
-        .audio-control-btn.muted {
-            background: rgba(244, 67, 54, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .audio-controls {
-                position: relative;
-                top: auto;
-                left: auto;
-                justify-content: center;
-                margin-bottom: 15px;
-            }
-        }
-
         .status-bar {
             position: fixed;
             top: 25px;
@@ -150,8 +98,31 @@
             background: rgba(76, 175, 80, 0.9);
         }
 
-        .status-bar.error {
-            background: rgba(244, 67, 54, 0.9);
+        .debug-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #0F0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 400px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .debug-panel h4 {
+            color: #FFF;
+            margin-bottom: 10px;
+        }
+
+        .debug-line {
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .main-interface {
@@ -218,20 +189,14 @@
             animation: pulse 2s infinite;
         }
 
+        .mic-button.error {
+            background: linear-gradient(135deg, #f44336, #e57373);
+        }
+
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
             70% { box-shadow: 0 0 0 25px rgba(76, 175, 80, 0); }
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-        .mic-button.speaking {
-            background: linear-gradient(135deg, #FF9800, #FFB74D);
-            animation: speaking 1s infinite;
-        }
-
-        @keyframes speaking {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
         }
 
         .mic-status {
@@ -250,60 +215,19 @@
             border-color: rgba(76, 175, 80, 0.3);
         }
 
-        .mic-status.processing {
-            background: rgba(255, 243, 224, 0.9);
-            color: #F57C00;
-            border-color: rgba(255, 152, 0, 0.3);
-        }
-
-        .mic-status.speaking {
-            background: rgba(255, 243, 224, 0.9);
-            color: #FF9800;
-            border-color: rgba(255, 152, 0, 0.3);
-        }
-
         .mic-status.error {
             background: rgba(255, 235, 238, 0.9);
             color: #D32F2F;
             border-color: rgba(244, 67, 54, 0.3);
         }
 
-        /* Smart Microphone Device Info */
-        .mic-device-info {
+        .browser-info {
             margin-top: 15px;
-            padding: 10px 20px;
-            background: rgba(227, 242, 253, 0.6);
-            border-radius: 15px;
-            font-size: 13px;
-            color: #1976D2;
-            display: none;
-        }
-
-        .mic-device-info.show {
-            display: block;
-        }
-
-        .dark-mode .mic-device-info {
-            background: rgba(30, 58, 138, 0.6);
-            color: #BBDEFB;
-        }
-
-        .mic-device-selector {
-            margin-top: 10px;
-            padding: 8px 15px;
-            border: 1px solid rgba(25, 118, 210, 0.3);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #1976D2;
             font-size: 12px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .dark-mode .mic-device-selector {
-            background: rgba(30, 58, 138, 0.9);
-            color: #E3F2FD;
-            border-color: rgba(144, 202, 249, 0.3);
+            text-align: center;
         }
 
         .transcription {
@@ -385,10 +309,6 @@
             margin-bottom: 20px;
         }
 
-        .dark-mode .typing-indicator {
-            background: rgba(30, 58, 138, 0.9);
-        }
-
         .typing-dot {
             width: 10px;
             height: 10px;
@@ -459,7 +379,6 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
         }
 
         .dark-mode .controls {
@@ -475,22 +394,17 @@
             font-size: 15px;
             min-width: 180px;
             transition: all 0.3s ease;
-        }
-
-        .control-button.admin {
             background: linear-gradient(135deg, #1976D2, #42A5F5);
-            color: white;
-            display: none;
-        }
-
-        .control-button.privacy {
-            background: linear-gradient(135deg, #FF9800, #FFB74D);
             color: white;
         }
 
         .control-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
         }
 
         .toast {
@@ -504,7 +418,7 @@
             font-weight: 600;
             backdrop-filter: blur(15px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            transform: translateX(100%);
+            transform: translateX(400px);
             transition: transform 0.4s ease;
             z-index: 1001;
             max-width: 350px;
@@ -527,134 +441,55 @@
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 30px;
-            text-align: center;
-            border: 2px solid rgba(244, 67, 54, 0.2);
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .dark-mode .emergency {
             background: rgba(30, 58, 138, 0.95);
-            border-color: rgba(255, 138, 128, 0.3);
         }
 
         .emergency h3 {
             color: #D32F2F;
-            margin-bottom: 25px;
-            font-size: 1.6em;
-            font-weight: 700;
-        }
-
-        .country {
             margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(244, 67, 54, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid #D32F2F;
         }
 
-        .dark-mode .country {
-            background: rgba(244, 67, 54, 0.1);
-        }
-
-        .country-title {
-            font-weight: 700;
-            color: #D32F2F;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-
-        .emergency-link {
+        .emergency a {
             color: #D32F2F;
             text-decoration: none;
             font-weight: 600;
-            margin: 5px 8px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: inline-block;
-            transition: all 0.3s ease;
+            margin: 0 10px;
         }
 
-        .emergency-link:hover {
-            background: rgba(244, 67, 54, 0.1);
+        .emergency a:hover {
             text-decoration: underline;
-            transform: translateY(-1px);
-        }
-
-        .footer {
-            text-align: center;
-            color: #1976D2;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-
-        .dark-mode .footer {
-            color: #BBDEFB;
-            background: rgba(30, 58, 138, 0.8);
-        }
-
-        .disclaimer {
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #D32F2F;
-            font-size: 1.2em;
-        }
-
-        .dark-mode .disclaimer {
-            color: #FF8A80;
-        }
-
-        .closing {
-            background: rgba(25, 118, 210, 0.1);
-            border: 2px solid rgba(25, 118, 210, 0.2);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            font-style: italic;
-            color: #1976D2;
-            font-weight: 600;
-            font-size: 1.2em;
-        }
-
-        .dark-mode .closing {
-            background: rgba(144, 202, 249, 0.1);
-            color: #90CAF9;
-            border-color: rgba(144, 202, 249, 0.3);
         }
     </style>
 </head>
 <body>
     <div class="status-bar" id="statusBar">⚠️ Modalità Demo</div>
     
+    <!-- Debug Panel -->
+    <div class="debug-panel" id="debugPanel">
+        <h4>🔧 DEBUG MICROFONO</h4>
+        <div id="debugLog"></div>
+    </div>
+    
     <div class="container">
         <div class="header">
-            <div class="audio-controls">
-                <button class="audio-control-btn" id="audioToggle" title="Attiva/Disattiva audio">🔊</button>
-                <button class="audio-control-btn" id="volumeControl" title="Controllo volume">🎚️</button>
-            </div>
-            
             <button class="theme-toggle" id="themeToggle" title="Cambia tema">🌙</button>
             <h1>AluIA</h1>
-            <p id="headerSubtitle">Supporto psicologico intelligente sempre al tuo fianco</p>
+            <p>Supporto psicologico intelligente sempre al tuo fianco</p>
         </div>
 
         <div class="main-interface">
             <div class="section">
-                <h2 id="voiceTitle">🎤 Comunicazione Vocale</h2>
+                <h2>🎤 Comunicazione Vocale</h2>
                 
                 <div class="mic-controls">
                     <button class="mic-button" id="micBtn">🎤</button>
                     <div class="mic-status" id="micStatus">Clicca per attivare il microfono</div>
-                    
-                    <!-- Smart Microphone Device Info -->
-                    <div class="mic-device-info" id="micDeviceInfo">
-                        <div id="selectedDevice">Dispositivo: Rilevamento...</div>
-                        <select class="mic-device-selector" id="micDeviceSelector">
-                            <option value="">Seleziona microfono...</option>
-                        </select>
-                    </div>
+                    <div class="browser-info" id="browserInfo"></div>
                 </div>
 
                 <div class="transcription" id="transcription">
@@ -663,10 +498,10 @@
             </div>
 
             <div class="section">
-                <h2 id="chatTitle">💬 Chat con Alu</h2>
+                <h2>💬 Chat con Alu</h2>
                 
                 <div class="chat-container" id="chatContainer">
-                    <div class="message assistant" id="welcomeMessage">
+                    <div class="message assistant">
                         👋 Ciao! Sono Alu e sono qui per aiutarti. Puoi parlarmi vocalmente premendo il microfono o scrivere qui nella chat. Come posso supportarti oggi?
                     </div>
                 </div>
@@ -685,560 +520,118 @@
         </div>
 
         <div class="controls">
-            <button class="control-button admin" id="adminBtn">⚙️ Admin Config</button>
-            <button class="control-button privacy" id="privacyBtn">🔒 Privacy & Sicurezza</button>
+            <button class="control-button" id="clearBtn">🗑️ Pulisci Chat</button>
+            <button class="control-button test-button" id="testMicBtn">🧪 Test Microfono</button>
+            <button class="control-button" id="toggleDebugBtn">🔧 Debug ON/OFF</button>
         </div>
 
-        <div class="emergency" id="emergencySection">
-            <h3 id="emergencyTitle">🆘 CONTATTI DI EMERGENZA</h3>
-            
-            <div class="country">
-                <div class="country-title">🇮🇹 ITALIA</div>
-                <a href="tel:800833833" class="emergency-link">📞 Telefono Amico: 800.833.833</a>
-                <a href="tel:+39022022873" class="emergency-link">🌍 Dall'estero: +39 02 20228733</a>
-                <a href="tel:112" class="emergency-link">🚨 Numero Unico Emergenza: 112</a>
-                <a href="tel:1522" class="emergency-link">🛡️ Antiviolenza e Stalking: 1522</a>
-                <a href="tel:1520" class="emergency-link">❤️ Croce Rossa Emergenza Psicologica: 1520</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇵🇹 PORTOGALLO</div>
-                <a href="tel:808242424" class="emergency-link">🏥 SNS 24: 808 24 24 24 (opzione 4)</a>
-                <a href="tel:116006" class="emergency-link">🆘 APAV: 116 006</a>
-                <a href="tel:112" class="emergency-link">🚨 Emergenza UE: 112</a>
-                <a href="tel:213544545" class="emergency-link">💚 SOS Voz Amiga: 213 544 545</a>
-                <a href="tel:925512884" class="emergency-link">🤝 Conversa Amiga: 925 512 884</a>
-                <a href="tel:228323535" class="emergency-link">📞 Telefone da Amizade: 228 323 535</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇬🇧 REGNO UNITO</div>
-                <a href="tel:999" class="emergency-link">🚨 Emergenze: 999</a>
-                <a href="tel:08082000247" class="emergency-link">🛡️ Domestic Abuse Helpline: 0808 2000 247</a>
-                <a href="tel:116123" class="emergency-link">💙 Samaritans: 116 123</a>
-                <a href="tel:08001111" class="emergency-link">👶 Childline: 0800 1111</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇪🇸 SPAGNA</div>
-                <a href="tel:112" class="emergency-link">🚨 Emergenza Generale: 112</a>
-                <a href="tel:800101800" class="emergency-link">🧠 Supporto Psicologico 24h: 800 101 800</a>
-                <a href="tel:016" class="emergency-link">🛡️ Violenza di Genere: 016</a>
-                <a href="tel:717003717" class="emergency-link">💚 Telefono della Speranza: 717 003 717</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇺🇸 STATI UNITI</div>
-                <a href="tel:911" class="emergency-link">🚨 Emergenze: 911</a>
-                <a href="tel:988" class="emergency-link">💙 Suicide & Crisis Lifeline: 988</a>
-                <a href="tel:741741" class="emergency-link">📱 Crisis Text Line: Text HOME to 741741</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇫🇷 FRANCIA</div>
-                <a href="tel:15" class="emergency-link">🚨 SAMU: 15</a>
-                <a href="tel:0140095095" class="emergency-link">💙 SOS Amitié: 01 40 09 50 95</a>
-                <a href="tel:3114" class="emergency-link">🛡️ Numero nazionale prevenzione suicidio: 3114</a>
-            </div>
-
-            <div class="country">
-                <div class="country-title">🇩🇪 GERMANIA</div>
-                <a href="tel:112" class="emergency-link">🚨 Emergenze: 112</a>
-                <a href="tel:08001110111" class="emergency-link">💙 Telefonseelsorge: 0800 111 0 111</a>
-                <a href="tel:08001110222" class="emergency-link">💚 Telefonseelsorge: 0800 111 0 222</a>
-            </div>
-        </div>
-
-        <div class="footer">
-            <div class="disclaimer" id="disclaimerText">
-                ⚠️ IMPORTANTE: AluIA non sostituisce il supporto psicologico professionale.
-            </div>
-            <p id="footerText1">In caso di emergenze, contatta immediatamente un professionista qualificato o i servizi di emergenza.</p>
-            <p style="margin-top: 15px; font-size: 0.9em;" id="footerText2">
-                🔒 <strong>Privacy Garantita:</strong> Tutte le conversazioni sono completamente private e sicure. 
-                I tuoi dati non vengono mai condivisi o salvati sui nostri server.
-            </p>
-        </div>
-
-        <div class="closing" id="closingMessage">
-            💙 "Quando vuoi, sono qui per ascoltarti sempre." - Alu
-        </div>
-    </div>
-
-    <!-- Admin Config Modal -->
-    <div id="adminModal" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px);">
-        <div style="background: white; margin: 5% auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 600px; position: relative; animation: modalAppear 0.4s ease;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(25, 118, 210, 0.1);">
-                <h2 style="font-size: 1.6em; font-weight: 700; color: #1976D2;" id="adminModalTitle">⚙️ Configurazione Amministratore</h2>
-                <button id="closeAdmin" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #757575;">&times;</button>
-            </div>
-            <div style="margin-bottom: 25px;">
-                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #1976D2;" id="apiKeyLabel">OpenAI API Key:</label>
-                <input type="password" id="apiKey" placeholder="sk-..." style="width: 100%; padding: 15px 20px; border: 2px solid rgba(25, 118, 210, 0.3); border-radius: 15px; font-size: 16px;">
-            </div>
-            <div style="margin-bottom: 25px;">
-                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #1976D2;" id="assistantIdLabel">Assistant ID (opzionale):</label>
-                <input type="text" id="assistantId" placeholder="asst_..." style="width: 100%; padding: 15px 20px; border: 2px solid rgba(25, 118, 210, 0.3); border-radius: 15px; font-size: 16px;">
-            </div>
-            <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
-                <button id="cancelAdmin" style="padding: 15px 30px; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 15px; background: rgba(189, 189, 189, 0.2); color: #1976D2; border: 2px solid rgba(25, 118, 210, 0.3);">Annulla</button>
-                <button id="saveAdmin" style="padding: 15px 30px; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, #1976D2, #42A5F5); color: white;">Salva</button>
+        <div class="emergency">
+            <h3>🆘 Se hai bisogno di aiuto immediato:</h3>
+            <div>
+                <a href="tel:800833833">📞 Telefono Amico: 800.833.833</a>
+                <a href="tel:112">🚨 Emergenza: 112</a>
             </div>
         </div>
     </div>
 
     <script>
-        console.log('🚀 Avvio AluIA Completo (Microfono Stabilizzato + ElevenLabs + Multilingual + Smart Microphone)...');
-
-        // === SISTEMA MULTILINGUA ===
-        const translations = {
-            it: {
-                lang: 'it-IT',
-                title: 'AluIA - Supporto Psicologico',
-                headerSubtitle: 'Supporto psicologico intelligente sempre al tuo fianco',
-                voiceTitle: '🎤 Comunicazione Vocale',
-                chatTitle: '💬 Chat con Alu',
-                welcomeMessage: '👋 Ciao! Sono Alu e sono qui per aiutarti. Puoi parlarmi vocalmente premendo il microfono o scrivere qui nella chat. Come posso supportarti oggi?',
-                micClickToActivate: 'Clicca per attivare il microfono',
-                micInitializing: '⚡ Inizializzazione microfono...',
-                micActive: '🎧 Microfono attivo - Parla liberamente!',
-                micSpeaking: '🗣️ Alu sta parlando...',
-                micError: '❌ Errore microfono - Clicca per riprovare',
-                micDisabled: '🚫 Microfono disabilitato',
-                transcriptionPlaceholder: 'La trascrizione in tempo reale apparirà qui...',
-                chatPlaceholder: 'Scrivi il tuo messaggio...',
-                sendButton: 'Invia',
-                privacyButton: '🔒 Privacy & Sicurezza',
-                emergencyTitle: '🆘 CONTATTI DI EMERGENZA',
-                disclaimerText: '⚠️ IMPORTANTE: AluIA non sostituisce il supporto psicologico professionale.',
-                footerText1: 'In caso di emergenze, contatta immediatamente un professionista qualificato o i servizi di emergenza.',
-                footerText2: '🔒 <strong>Privacy Garantita:</strong> Tutte le conversazioni sono completamente private e sicure. I tuoi dati non vengono mai condivisi o salvati sui nostri server.',
-                closingMessage: '💙 "Quando vuoi, sono qui per ascoltarti sempre." - Alu',
-                statusDemo: '⚠️ Modalità Demo',
-                statusReady: '✅ Alu Pronta',
-                deviceDetecting: 'Dispositivo: Rilevamento...',
-                selectMicrophone: 'Seleziona microfono...',
-                systemPrompt: 'Sei Alu, un assistente di supporto psicologico empatico e professionale di AluIA. Fornisci supporto emotivo, ascolto attivo e consigli pratici. Rispondi sempre in italiano. Sii caloroso, comprensivo e rassicurante. Ricorda che non sostituisci un professionista della salute mentale e in caso di emergenze suggerisci di contattare i servizi appropriati. Concludi sempre con incoraggiamento.'
-            },
-            en: {
-                lang: 'en-US',
-                title: 'AluIA - Psychological Support',
-                headerSubtitle: 'Intelligent psychological support always by your side',
-                voiceTitle: '🎤 Voice Communication',
-                chatTitle: '💬 Chat with Alu',
-                welcomeMessage: '👋 Hello! I\'m Alu and I\'m here to help you. You can talk to me vocally by pressing the microphone or write here in the chat. How can I support you today?',
-                micClickToActivate: 'Click to activate microphone',
-                micInitializing: '⚡ Initializing microphone...',
-                micActive: '🎧 Microphone active - Speak freely!',
-                micSpeaking: '🗣️ Alu is speaking...',
-                micError: '❌ Microphone error - Click to retry',
-                micDisabled: '🚫 Microphone disabled',
-                transcriptionPlaceholder: 'Real-time transcription will appear here...',
-                chatPlaceholder: 'Write your message...',
-                sendButton: 'Send',
-                privacyButton: '🔒 Privacy & Security',
-                emergencyTitle: '🆘 EMERGENCY CONTACTS',
-                disclaimerText: '⚠️ IMPORTANT: AluIA does not replace professional psychological support.',
-                footerText1: 'In case of emergencies, immediately contact a qualified professional or emergency services.',
-                footerText2: '🔒 <strong>Guaranteed Privacy:</strong> All conversations are completely private and secure. Your data is never shared or saved on our servers.',
-                closingMessage: '💙 "Whenever you want, I\'m here to always listen to you." - Alu',
-                statusDemo: '⚠️ Demo Mode',
-                statusReady: '✅ Alu Ready',
-                deviceDetecting: 'Device: Detecting...',
-                selectMicrophone: 'Select microphone...',
-                systemPrompt: 'You are Alu, an empathetic and professional psychological support assistant from AluIA. Provide emotional support, active listening and practical advice. Always respond in English. Be warm, understanding and reassuring. Remember that you do not replace a mental health professional and in case of emergencies suggest contacting appropriate services. Always end with encouragement.'
-            },
-            pt: {
-                lang: 'pt-PT',
-                title: 'AluIA - Apoio Psicológico',
-                headerSubtitle: 'Apoio psicológico inteligente sempre ao seu lado',
-                voiceTitle: '🎤 Comunicação por Voz',
-                chatTitle: '💬 Chat com Alu',
-                welcomeMessage: '👋 Olá! Sou a Alu e estou aqui para ajudar. Pode falar comigo vocalmente premindo o microfone ou escrever aqui no chat. Como posso apoiá-lo hoje?',
-                micClickToActivate: 'Clique para ativar o microfone',
-                micInitializing: '⚡ Inicializando microfone...',
-                micActive: '🎧 Microfone ativo - Fale livremente!',
-                micSpeaking: '🗣️ Alu está a falar...',
-                micError: '❌ Erro no microfone - Clique para tentar novamente',
-                micDisabled: '🚫 Microfone desativado',
-                transcriptionPlaceholder: 'A transcrição em tempo real aparecerá aqui...',
-                chatPlaceholder: 'Escreva a sua mensagem...',
-                sendButton: 'Enviar',
-                privacyButton: '🔒 Privacidade e Segurança',
-                emergencyTitle: '🆘 CONTACTOS DE EMERGÊNCIA',
-                disclaimerText: '⚠️ IMPORTANTE: AluIA não substitui o apoio psicológico profissional.',
-                footerText1: 'Em caso de emergências, contacte imediatamente um profissional qualificado ou os serviços de emergência.',
-                footerText2: '🔒 <strong>Privacidade Garantida:</strong> Todas as conversas são completamente privadas e seguras. Os seus dados nunca são partilhados ou guardados nos nossos servidores.',
-                closingMessage: '💙 "Quando quiser, estou aqui para a escutar sempre." - Alu',
-                statusDemo: '⚠️ Modo Demo',
-                statusReady: '✅ Alu Pronta',
-                deviceDetecting: 'Dispositivo: Detetando...',
-                selectMicrophone: 'Selecionar microfone...',
-                systemPrompt: 'És a Alu, uma assistente de apoio psicológico empática e profissional da AluIA. Fornece apoio emocional, escuta ativa e conselhos práticos. Responde sempre em português. Sê calorosa, compreensiva e tranquilizadora. Lembra-te que não substituis um profissional de saúde mental e em caso de emergências sugere contactar os serviços apropriados. Termina sempre com encorajamento.'
-            },
-            es: {
-                lang: 'es-ES',
-                title: 'AluIA - Apoyo Psicológico',
-                headerSubtitle: 'Apoyo psicológico inteligente siempre a tu lado',
-                voiceTitle: '🎤 Comunicación por Voz',
-                chatTitle: '💬 Chat con Alu',
-                welcomeMessage: '👋 ¡Hola! Soy Alu y estoy aquí para ayudarte. Puedes hablarme vocalmente presionando el micrófono o escribir aquí en el chat. ¿Cómo puedo apoyarte hoy?',
-                micClickToActivate: 'Haz clic para activar el micrófono',
-                micInitializing: '⚡ Inicializando micrófono...',
-                micActive: '🎧 Micrófono activo - ¡Habla libremente!',
-                micSpeaking: '🗣️ Alu está hablando...',
-                micError: '❌ Error de micrófono - Haz clic para reintentar',
-                micDisabled: '🚫 Micrófono desactivado',
-                transcriptionPlaceholder: 'La transcripción en tiempo real aparecerá aquí...',
-                chatPlaceholder: 'Escribe tu mensaje...',
-                sendButton: 'Enviar',
-                privacyButton: '🔒 Privacidad y Seguridad',
-                emergencyTitle: '🆘 CONTACTOS DE EMERGENCIA',
-                disclaimerText: '⚠️ IMPORTANTE: AluIA no sustituye el apoyo psicológico profesional.',
-                footerText1: 'En caso de emergencias, contacta inmediatamente a un profesional cualificado o a los servicios de emergencia.',
-                footerText2: '🔒 <strong>Privacidad Garantizada:</strong> Todas las conversaciones son completamente privadas y seguras. Tus datos nunca se comparten o guardan en nuestros servidores.',
-                closingMessage: '💙 "Cuando quieras, estoy aquí para escucharte siempre." - Alu',
-                statusDemo: '⚠️ Modo Demo',
-                statusReady: '✅ Alu Lista',
-                deviceDetecting: 'Dispositivo: Detectando...',
-                selectMicrophone: 'Seleccionar micrófono...',
-                systemPrompt: 'Eres Alu, una asistente de apoyo psicológico empática y profesional de AluIA. Proporciona apoyo emocional, escucha activa y consejos prácticos. Responde siempre en español. Sé cálida, comprensiva y tranquilizadora. Recuerda que no sustituyes a un profesional de la salud mental y en caso de emergencias sugiere contactar los servicios apropiados. Termina siempre con aliento.'
+        // Debug Logger
+        class DebugLogger {
+            constructor() {
+                this.logElement = document.getElementById('debugLog');
+                this.enabled = true;
             }
-        };
 
+            log(message, type = 'info') {
+                if (!this.enabled) return;
+                
+                const timestamp = new Date().toLocaleTimeString();
+                const line = document.createElement('div');
+                line.className = 'debug-line';
+                line.innerHTML = `<span style="color: ${type === 'error' ? '#f44336' : type === 'success' ? '#4CAF50' : '#FFD700'}">[${timestamp}]</span> ${message}`;
+                this.logElement.appendChild(line);
+                this.logElement.scrollTop = this.logElement.scrollHeight;
+                
+                // Mantieni solo le ultime 50 righe
+                while (this.logElement.children.length > 50) {
+                    this.logElement.removeChild(this.logElement.firstChild);
+                }
+                
+                // Log anche in console
+                console.log(`[DEBUG ${type.toUpperCase()}] ${message}`);
+            }
+
+            clear() {
+                this.logElement.innerHTML = '';
+            }
+
+            toggle() {
+                this.enabled = !this.enabled;
+                document.getElementById('debugPanel').style.display = this.enabled ? 'block' : 'none';
+            }
+        }
+
+        // Configurazione principale
         class AluIA {
             constructor() {
-                // === LANGUAGE DETECTION (MANTIENE STESSO SISTEMA ORIGINALE) ===
-                this.detectedLanguage = this.detectLanguage();
-                this.currentLang = translations[this.detectedLanguage] || translations.it;
+                this.debug = new DebugLogger();
+                this.debug.log('Inizializzazione AluIA...');
                 
-                // === CORE STATES (IDENTICI AL CODICE ORIGINALE) ===
-                this.micState = 'IDLE'; // IDLE, INITIALIZING, ACTIVE, ERROR, DISABLED
                 this.recognition = null;
-                this.isProcessing = false;
+                this.isListening = false;
+                this.recognitionStartTime = null;
                 this.isDarkMode = localStorage.getItem('aluia_theme') === 'dark';
-                this.conversationHistory = [];
                 
-                // === API CONFIGURATION (IDENTICA) ===
-                this.apiKey = localStorage.getItem('aluia_api_key') || '';
-                this.isApiConfigured = this.apiKey.length > 0;
+                // Check ambiente
+                this.checkEnvironment();
                 
-                // === SISTEMA GESTIONE ERRORI MICROFONO (IDENTICO) ===
-                this.errorCount = 0;
-                this.maxErrors = 3;
-                this.lastErrorTime = 0;
-                this.errorResetInterval = 60000; // 1 minuto
-                
-                // === AUDIO ELEVENLABS (IDENTICO) ===
-                this.audioEnabled = localStorage.getItem('aluia_audio_enabled') !== 'false';
-                this.audioVolume = parseFloat(localStorage.getItem('aluia_audio_volume')) || 0.8;
-                this.currentAudio = null;
-                this.isPlayingAudio = false;
-                this.elevenLabsVoiceId = 'IyWqvgbFwm4IK1x6M489'; // Voice ID ElevenLabs
-                
-                // === SMART MICROPHONE (AGGIUNTO) ===
-                this.availableDevices = [];
-                this.selectedDeviceId = localStorage.getItem('aluia_selected_device') || '';
-                this.deviceType = 'unknown';
-                
-                // === TIMER E CONTROLLI (IDENTICI) ===
-                this.stateTimeout = null;
-                this.healthCheckInterval = null;
-                
-                // === INIZIALIZZAZIONE ===
-                this.initLanguage();
                 this.initElements();
-                this.setupEvents();
+                this.detectBrowser();
+                this.initSpeechRecognition();
+                this.setupEventListeners();
                 this.applyTheme();
-                this.updateUI();
-                this.initAudioControls();
-                this.initMicrophoneDevices(); // AGGIUNTO
-                this.startHealthCheck();
                 
-                console.log('✅ AluIA Completo inizializzato');
-                console.log('🌍 Lingua rilevata:', this.detectedLanguage);
-                this.showToast('AluIA pronta! Clicca il microfono per iniziare.', 'success');
+                this.debug.log('AluIA inizializzata', 'success');
             }
 
-            // === LANGUAGE DETECTION ===
-            detectLanguage() {
-                // Priority: URL parameter > referrer > browser language > default
-                const urlParams = new URLSearchParams(window.location.search);
-                const urlLang = urlParams.get('lang');
-                
-                if (urlLang && translations[urlLang]) {
-                    console.log('🌍 Lingua da URL:', urlLang);
-                    return urlLang;
+            checkEnvironment() {
+                // Check HTTPS
+                if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                    this.debug.log('⚠️ ATTENZIONE: Il microfono richiede HTTPS!', 'error');
+                    alert('Il riconoscimento vocale richiede HTTPS. Usa https:// nell\'URL o esegui in localhost.');
                 }
                 
-                // Check referrer language
-                const referrer = document.referrer;
-                if (referrer) {
-                    try {
-                        const referrerUrl = new URL(referrer);
-                        const referrerDomain = referrerUrl.hostname.toLowerCase();
-                        
-                        if (referrerDomain.includes('.it') || referrerDomain.includes('italia')) {
-                            console.log('🌍 Lingua da referrer (IT):', referrerDomain);
-                            return 'it';
-                        } else if (referrerDomain.includes('.pt') || referrerDomain.includes('portugal')) {
-                            console.log('🌍 Lingua da referrer (PT):', referrerDomain);
-                            return 'pt';
-                        } else if (referrerDomain.includes('.es') || referrerDomain.includes('españa') || referrerDomain.includes('spain')) {
-                            console.log('🌍 Lingua da referrer (ES):', referrerDomain);
-                            return 'es';
-                        }
-                    } catch (e) {
-                        console.warn('⚠️ Impossibile analizzare referrer URL:', e);
-                    }
+                // Check API disponibili
+                if (!('mediaDevices' in navigator)) {
+                    this.debug.log('navigator.mediaDevices non disponibile', 'error');
                 }
                 
-                // Browser language
-                const browserLang = navigator.language || navigator.userLanguage || 'it';
-                const langCode = browserLang.split('-')[0];
-                
-                if (translations[langCode]) {
-                    console.log('🌍 Lingua da browser:', langCode);
-                    return langCode;
-                }
-                
-                console.log('🌍 Usando lingua default: it');
-                return 'it';
-            }
-
-            initLanguage() {
-                // Set document language and title
-                document.documentElement.lang = this.detectedLanguage;
-                document.title = this.currentLang.title;
-                
-                // Update all text elements
-                this.updateAllTexts();
-                console.log('🌍 Sistema linguistico inizializzato per:', this.detectedLanguage);
-            }
-
-            updateAllTexts() {
-                const elements = {
-                    'headerSubtitle': this.currentLang.headerSubtitle,
-                    'voiceTitle': this.currentLang.voiceTitle,
-                    'chatTitle': this.currentLang.chatTitle,
-                    'welcomeMessage': this.currentLang.welcomeMessage,
-                    'transcription': this.currentLang.transcriptionPlaceholder,
-                    'selectedDevice': this.currentLang.deviceDetecting,
-                    'emergencyTitle': this.currentLang.emergencyTitle,
-                    'disclaimerText': this.currentLang.disclaimerText,
-                    'footerText1': this.currentLang.footerText1,
-                    'closingMessage': this.currentLang.closingMessage,
-                    'adminModalTitle': 'Configurazione Amministratore',
-                    'apiKeyLabel': 'OpenAI API Key:',
-                    'assistantIdLabel': 'Assistant ID (opzionale):'
-                };
-
-                for (const [id, text] of Object.entries(elements)) {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.textContent = text;
-                    }
-                }
-
-                // Update placeholders
-                if (this.chatInput) {
-                    this.chatInput.placeholder = this.currentLang.chatPlaceholder;
-                }
-                
-                if (this.sendBtn) {
-                    this.sendBtn.textContent = this.currentLang.sendButton;
-                }
-                
-                // HTML content
-                const footerText2 = document.getElementById('footerText2');
-                if (footerText2) {
-                    footerText2.innerHTML = this.currentLang.footerText2;
-                }
-
-                // Update buttons
-                const cancelAdmin = document.getElementById('cancelAdmin');
-                const saveAdmin = document.getElementById('saveAdmin');
-                if (cancelAdmin) cancelAdmin.textContent = 'Annulla';
-                if (saveAdmin) saveAdmin.textContent = 'Salva';
-            }
-
-            // === SMART MICROPHONE DEVICE MANAGEMENT ===
-            async initMicrophoneDevices() {
-                try {
-                    console.log('🎤 Inizializzazione rilevamento dispositivi microfono...');
-                    
-                    // Request permissions first
-                    await navigator.mediaDevices.getUserMedia({ audio: true })
-                        .then(stream => {
-                            stream.getTracks().forEach(track => track.stop());
-                        });
-                    
-                    await this.detectAvailableDevices();
-                    this.setupDeviceSelector();
-                    
-                } catch (error) {
-                    console.error('❌ Errore inizializzazione dispositivi microfono:', error);
-                    // Non mostra errore all'utente, continua con dispositivo default
+                if (!('getUserMedia' in navigator.mediaDevices || {})) {
+                    this.debug.log('getUserMedia non disponibile', 'error');
                 }
             }
 
-            async detectAvailableDevices() {
-                try {
-                    const devices = await navigator.mediaDevices.enumerateDevices();
-                    this.availableDevices = devices.filter(device => device.kind === 'audioinput');
-                    
-                    console.log('🎤 Dispositivi audio trovati:', this.availableDevices.length);
-                    
-                    // Auto-select best device if none selected
-                    if (!this.selectedDeviceId && this.availableDevices.length > 0) {
-                        this.selectedDeviceId = this.selectBestDevice();
-                        localStorage.setItem('aluia_selected_device', this.selectedDeviceId);
-                    }
-                    
-                    this.updateDeviceInfo();
-                    
-                } catch (error) {
-                    console.error('❌ Errore rilevamento dispositivi:', error);
-                }
-            }
-
-            selectBestDevice() {
-                if (this.availableDevices.length === 0) return '';
+            detectBrowser() {
+                const userAgent = navigator.userAgent;
+                let browserInfo = 'Browser: ';
                 
-                // Priority order: external mic > headset > built-in
-                const priorities = [
-                    device => this.classifyDevice(device.label) === 'external',
-                    device => this.classifyDevice(device.label) === 'headset',
-                    device => this.classifyDevice(device.label) === 'built-in'
-                ];
-                
-                for (const priorityFn of priorities) {
-                    const device = this.availableDevices.find(priorityFn);
-                    if (device) {
-                        console.log('🎤 Dispositivo auto-selezionato:', device.label);
-                        return device.deviceId;
-                    }
-                }
-                
-                // Fallback to first device
-                console.log('🎤 Usando dispositivo fallback:', this.availableDevices[0].label);
-                return this.availableDevices[0].deviceId;
-            }
-
-            classifyDevice(label) {
-                const labelLower = label.toLowerCase();
-                
-                if (labelLower.includes('airpods') || 
-                    labelLower.includes('headphone') || 
-                    labelLower.includes('headset') ||
-                    labelLower.includes('bluetooth') ||
-                    labelLower.includes('wireless')) {
-                    return 'headset';
-                }
-                
-                if (labelLower.includes('usb') || 
-                    labelLower.includes('external') ||
-                    labelLower.includes('microphone') ||
-                    labelLower.includes('blue') ||
-                    labelLower.includes('rode') ||
-                    labelLower.includes('audio-technica')) {
-                    return 'external';
-                }
-                
-                if (labelLower.includes('built-in') || 
-                    labelLower.includes('internal') ||
-                    labelLower.includes('default') ||
-                    labelLower.includes('macbook') ||
-                    labelLower.includes('laptop')) {
-                    return 'built-in';
-                }
-                
-                return 'unknown';
-            }
-
-            setupDeviceSelector() {
-                const selector = document.getElementById('micDeviceSelector');
-                if (!selector) return;
-                
-                // Clear existing options
-                selector.innerHTML = `<option value="">${this.currentLang.selectMicrophone}</option>`;
-                
-                // Add device options
-                this.availableDevices.forEach(device => {
-                    const option = document.createElement('option');
-                    option.value = device.deviceId;
-                    option.textContent = this.formatDeviceName(device.label);
-                    if (device.deviceId === this.selectedDeviceId) {
-                        option.selected = true;
-                    }
-                    selector.appendChild(option);
-                });
-                
-                // Add change event listener
-                selector.addEventListener('change', (e) => {
-                    this.selectedDeviceId = e.target.value;
-                    localStorage.setItem('aluia_selected_device', this.selectedDeviceId);
-                    this.updateDeviceInfo();
-                    
-                    // Restart microphone if active
-                    if (this.micState === 'ACTIVE') {
-                        console.log('🔄 Cambio dispositivo, riavvio microfono...');
-                        this.stopMicrophone();
-                        setTimeout(() => this.startMicrophone(), 1000);
-                    }
-                });
-                
-                console.log('🎤 Selettore dispositivi configurato');
-            }
-
-            formatDeviceName(label) {
-                if (!label || label === 'Default') return '❓ Dispositivo sconosciuto';
-                
-                const deviceType = this.classifyDevice(label);
-                const typeIcon = {
-                    'built-in': '🖥️',
-                    'headset': '🎧',
-                    'external': '🎤',
-                    'unknown': '❓'
-                }[deviceType];
-                
-                // Truncate long names
-                let name = label;
-                if (name.length > 30) {
-                    name = name.substring(0, 27) + '...';
-                }
-                
-                return `${typeIcon} ${name}`;
-            }
-
-            updateDeviceInfo() {
-                const deviceInfo = document.getElementById('micDeviceInfo');
-                const selectedDevice = document.getElementById('selectedDevice');
-                
-                if (!deviceInfo || !selectedDevice) return;
-                
-                const device = this.availableDevices.find(d => d.deviceId === this.selectedDeviceId);
-                
-                if (device && this.availableDevices.length > 1) {
-                    this.deviceType = this.classifyDevice(device.label);
-                    const deviceName = this.formatDeviceName(device.label);
-                    selectedDevice.textContent = `Dispositivo: ${deviceName}`;
-                    deviceInfo.classList.add('show');
+                if (userAgent.indexOf('Chrome') > -1) {
+                    browserInfo += 'Chrome ✅';
+                } else if (userAgent.indexOf('Safari') > -1) {
+                    browserInfo += 'Safari ✅';
+                } else if (userAgent.indexOf('Firefox') > -1) {
+                    browserInfo += 'Firefox ⚠️ (supporto limitato)';
+                } else if (userAgent.indexOf('Edge') > -1) {
+                    browserInfo += 'Edge ✅';
                 } else {
-                    selectedDevice.textContent = 'Dispositivo: ' + (device ? this.formatDeviceName(device.label) : 'Default');
-                    // Show only if multiple devices
-                    if (this.availableDevices.length > 1) {
-                        deviceInfo.classList.add('show');
-                    }
+                    browserInfo += 'Sconosciuto ❌';
                 }
                 
-                console.log('🎤 Info dispositivo aggiornate:', this.deviceType);
+                document.getElementById('browserInfo').textContent = browserInfo;
+                this.debug.log(browserInfo);
             }
-
-            // === RESTO DEL CODICE IDENTICO AL TUO ORIGINALE ===
 
             initElements() {
-                // Elementi principali
                 this.micBtn = document.getElementById('micBtn');
                 this.micStatus = document.getElementById('micStatus');
                 this.transcription = document.getElementById('transcription');
@@ -1248,678 +641,321 @@
                 this.statusBar = document.getElementById('statusBar');
                 this.themeToggle = document.getElementById('themeToggle');
                 this.typingIndicator = document.getElementById('typingIndicator');
-
-                // Controlli audio
-                this.audioToggle = document.getElementById('audioToggle');
-                this.volumeControl = document.getElementById('volumeControl');
-
-                // Admin
-                this.adminBtn = document.getElementById('adminBtn');
-                this.privacyBtn = document.getElementById('privacyBtn');
-                this.adminModal = document.getElementById('adminModal');
-
-                console.log('📋 Elementi DOM inizializzati');
+                this.clearBtn = document.getElementById('clearBtn');
+                this.testMicBtn = document.getElementById('testMicBtn');
+                this.toggleDebugBtn = document.getElementById('toggleDebugBtn');
             }
 
-            setupEvents() {
-                // === MICROFONO ===
-                if (this.micBtn) {
-                    this.micBtn.addEventListener('click', () => this.toggleMicrophone());
-                }
-
-                // === CHAT ===
-                if (this.sendBtn) {
-                    this.sendBtn.addEventListener('click', () => this.sendMessage());
-                }
-
-                if (this.chatInput) {
-                    this.chatInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            this.sendMessage();
-                        }
-                    });
-                }
-
-                // === AUDIO CONTROLS ===
-                if (this.audioToggle) {
-                    this.audioToggle.addEventListener('click', () => this.toggleAudio());
-                }
-
-                if (this.volumeControl) {
-                    this.volumeControl.addEventListener('click', () => this.cycleVolume());
-                }
-
-                // === THEME ===
-                if (this.themeToggle) {
-                    this.themeToggle.addEventListener('click', () => this.toggleTheme());
-                }
-
-                // === MODALS ===
-                if (this.privacyBtn) {
-                    this.privacyBtn.addEventListener('click', () => this.showPrivacyInfo());
-                }
-
-                if (this.adminBtn) {
-                    this.adminBtn.addEventListener('click', () => this.showAdminModal());
-                }
-
-                // Admin modal events
-                document.getElementById('closeAdmin')?.addEventListener('click', () => this.hideAdminModal());
-                document.getElementById('cancelAdmin')?.addEventListener('click', () => this.hideAdminModal());
-                document.getElementById('saveAdmin')?.addEventListener('click', () => this.saveAdminConfig());
-
-                // Admin access (Ctrl+Shift+A)
-                document.addEventListener('keydown', (e) => {
-                    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-                        const code = prompt('Codice amministratore:');
-                        if (code === 'ALUIA2025') {
-                            this.adminBtn.style.display = 'block';
-                            this.showToast('Accesso amministratore attivato', 'success');
-                        } else if (code !== null) {
-                            this.showToast('Codice non valido', 'error');
-                        }
-                    }
-                });
-
-                console.log('✅ Eventi configurati');
-            }
-
-            // === GESTIONE MICROFONO STABILIZZATA (IDENTICA AL TUO CODICE) ===
-
-            async toggleMicrophone() {
-                console.log('🎤 Toggle microfono - stato attuale:', this.micState);
+            async initSpeechRecognition() {
+                this.debug.log('Inizializzazione Speech Recognition...');
                 
-                if (this.micState === 'ACTIVE') {
-                    this.stopMicrophone();
-                } else if (this.micState === 'IDLE' || this.micState === 'ERROR') {
-                    await this.startMicrophone();
-                } else {
-                    console.log('⚠️ Microfono in stato transitorio:', this.micState);
-                    this.showToast('Aspetta che il microfono sia pronto', 'warning');
-                }
-            }
-
-            async startMicrophone() {
-                if (this.micState !== 'IDLE' && this.micState !== 'ERROR') {
-                    console.log('⚠️ Tentativo di avvio in stato non valido:', this.micState);
+                // Verifica supporto
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
+                if (!SpeechRecognition) {
+                    this.debug.log('Speech Recognition NON supportato!', 'error');
+                    this.micStatus.textContent = '❌ Riconoscimento vocale non supportato';
+                    this.micBtn.disabled = true;
+                    this.micBtn.classList.add('error');
                     return;
                 }
-
-                this.setState('INITIALIZING');
-                this.updateUI();
-
+                
+                this.debug.log('Speech Recognition disponibile', 'success');
+                
                 try {
-                    // Verifica supporto browser
-                    if (!this.checkSpeechRecognitionSupport()) {
-                        throw new Error('Speech Recognition non supportato');
-                    }
-
-                    // Richiedi permessi microfono CON DISPOSITIVO SELEZIONATO
-                    console.log('🎤 Richiedendo permessi microfono...');
-                    
-                    const constraints = { 
-                        audio: this.selectedDeviceId ? 
-                            { deviceId: { exact: this.selectedDeviceId } } : 
-                            true 
-                    };
-                    
-                    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    console.log('✅ Permessi microfono concessi per dispositivo:', this.selectedDeviceId || 'default');
-                    
-                    // Rilascia il stream dopo la verifica
+                    // Test permessi microfono
+                    this.debug.log('Verifico permessi microfono...');
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     stream.getTracks().forEach(track => track.stop());
-
-                    // Inizializza riconoscimento vocale
-                    this.initSpeechRecognition();
-
-                    // Avvia riconoscimento
-                    console.log('🎤 Avviando riconoscimento vocale...');
-                    this.recognition.start();
-
-                    // Timeout di sicurezza per l'avvio
-                    this.stateTimeout = setTimeout(() => {
-                        if (this.micState === 'INITIALIZING') {
-                            console.log('⏰ Timeout avvio microfono');
-                            this.handleMicrophoneError('Timeout avvio microfono');
-                        }
-                    }, 5000);
-
+                    this.debug.log('Permessi microfono OK', 'success');
                 } catch (error) {
-                    console.error('❌ Errore avvio microfono:', error);
-                    this.handleMicrophoneError(error.message);
-                }
-            }
-
-            stopMicrophone() {
-                console.log('🔇 Fermando microfono...');
-                
-                this.clearTimeouts();
-                
-                if (this.recognition) {
-                    try {
-                        this.recognition.stop();
-                        this.recognition.abort();
-                        console.log('🔇 Riconoscimento fermato');
-                    } catch (e) {
-                        console.warn('⚠️ Errore stop riconoscimento:', e);
-                    }
-                }
-
-                this.setState('IDLE');
-                this.updateUI();
-                this.showToast('Microfono disattivato', 'success');
-            }
-
-            checkSpeechRecognitionSupport() {
-                const hasSupport = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-                console.log('🎤 Supporto Speech Recognition:', hasSupport);
-                
-                if (!hasSupport) {
-                    this.showToast('Usa Chrome, Edge o Safari per il riconoscimento vocale', 'error');
+                    this.debug.log(`Errore permessi: ${error.message}`, 'error');
                 }
                 
-                return hasSupport;
-            }
-
-            initSpeechRecognition() {
-                if (this.recognition) {
-                    this.recognition = null;
-                }
-
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                // Crea istanza
                 this.recognition = new SpeechRecognition();
-                
-                // Configurazione ottimizzata
                 this.recognition.continuous = true;
                 this.recognition.interimResults = true;
-                this.recognition.lang = this.currentLang.lang; // USA LINGUA RILEVATA
+                this.recognition.lang = 'it-IT';
                 this.recognition.maxAlternatives = 1;
-
+                
+                this.debug.log('Speech Recognition configurato');
+                
                 // Eventi
-                this.recognition.onstart = () => this.handleRecognitionStart();
-                this.recognition.onresult = (event) => this.handleRecognitionResult(event);
-                this.recognition.onend = () => this.handleRecognitionEnd();
-                this.recognition.onerror = (event) => this.handleRecognitionError(event);
-
-                console.log('✅ Speech Recognition configurato per lingua:', this.currentLang.lang);
-            }
-
-            handleRecognitionStart() {
-                console.log('🎤 Riconoscimento avviato con successo');
-                this.clearTimeouts();
-                this.setState('ACTIVE');
-                this.updateUI();
-                this.resetErrorCount();
-            }
-
-            handleRecognitionResult(event) {
-                let interimTranscript = '';
-                let finalTranscript = '';
-
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        finalTranscript += transcript;
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-
-                // Aggiorna trascrizione in tempo reale
-                this.transcription.innerHTML = finalTranscript + 
-                    '<span style="color: #90CAF9; opacity: 0.8;">' + interimTranscript + '</span>';
-
-                // Elabora il testo finale
-                if (finalTranscript.trim() && !this.isProcessing) {
-                    console.log('🗣️ Trascrizione finale:', finalTranscript.trim());
-                    this.processVoiceInput(finalTranscript.trim());
-                }
-            }
-
-            handleRecognitionEnd() {
-                console.log('🔇 Riconoscimento terminato');
+                this.recognition.onstart = () => {
+                    this.debug.log('Recognition started', 'success');
+                    this.recognitionStartTime = Date.now();
+                    this.isListening = true;
+                    this.updateMicUI();
+                };
                 
-                if (this.micState === 'ACTIVE' && !this.isPlayingAudio) {
-                    // Il riconoscimento si è fermato inaspettatamente
-                    console.log('🔄 Tentativo riavvio automatico...');
-                    this.restartRecognition();
-                } else {
-                    // Fermato intenzionalmente o durante riproduzione audio
-                    this.setState('IDLE');
-                    this.updateUI();
-                }
-            }
-
-            handleRecognitionError(event) {
-                console.error('❌ Errore riconoscimento:', event.error);
-                
-                switch(event.error) {
-                    case 'not-allowed':
-                        this.handleMicrophoneError('Permesso microfono negato. Concedi i permessi e riprova.');
-                        this.setState('DISABLED');
-                        break;
-                    case 'no-speech':
-                        // Errore normale, riavvia silenziosamente
-                        console.log('⏸️ Nessun parlato rilevato, continuo...');
-                        return;
-                    case 'audio-capture':
-                        this.handleMicrophoneError('Nessun microfono trovato. Controlla che sia collegato.');
-                        this.setState('DISABLED');
-                        break;
-                    case 'network':
-                        this.handleMicrophoneError('Errore di rete. Verifica la connessione internet.');
-                        break;
-                    case 'aborted':
-                        console.log('⚠️ Riconoscimento interrotto');
-                        if (this.micState === 'ACTIVE') {
-                            this.restartRecognition();
-                        }
-                        return;
-                    default:
-                        this.handleMicrophoneError(`Errore tecnico: ${event.error}`);
-                        break;
-                }
-            }
-
-            restartRecognition() {
-                if (this.micState !== 'ACTIVE') {
-                    return;
-                }
-
-                console.log('🔄 Riavvio riconoscimento...');
-                
-                this.stateTimeout = setTimeout(() => {
-                    if (this.micState === 'ACTIVE' && this.recognition && !this.isPlayingAudio) {
-                        try {
-                            this.recognition.start();
-                            console.log('✅ Riconoscimento riavviato');
-                        } catch (error) {
-                            console.error('❌ Errore riavvio:', error);
-                            this.handleMicrophoneError('Errore riavvio microfono');
-                        }
-                    }
-                }, 1000);
-            }
-
-            handleMicrophoneError(errorMessage) {
-                console.error('💥 Errore microfono:', errorMessage);
-                
-                this.incrementErrorCount();
-                
-                if (this.errorCount >= this.maxErrors) {
-                    console.log('🛑 Troppi errori, disabilito microfono');
-                    this.setState('DISABLED');
-                    this.showToast('Microfono disabilitato per troppi errori. Ricarica la pagina.', 'error');
-                } else {
-                    this.setState('ERROR');
-                    this.showToast(errorMessage, 'error');
-                }
-                
-                this.updateUI();
-            }
-
-            // === GESTIONE STATI ===
-
-            setState(newState) {
-                console.log(`🔄 Cambio stato: ${this.micState} → ${newState}`);
-                this.micState = newState;
-            }
-
-            updateUI() {
-                if (!this.micBtn || !this.micStatus) return;
-
-                this.micBtn.className = 'mic-button';
-                this.micStatus.className = 'mic-status';
-
-                switch (this.micState) {
-                    case 'IDLE':
-                        this.micStatus.textContent = this.currentLang.micClickToActivate;
-                        this.transcription.textContent = this.currentLang.transcriptionPlaceholder;
-                        break;
+                this.recognition.onresult = (event) => {
+                    this.debug.log(`Result event - results: ${event.results.length}`);
                     
-                    case 'INITIALIZING':
-                        this.micBtn.classList.add('active');
-                        this.micStatus.textContent = this.currentLang.micInitializing;
-                        this.micStatus.classList.add('processing');
-                        this.transcription.textContent = 'Inizializzando il riconoscimento vocale...';
-                        break;
+                    let interimTranscript = '';
+                    let finalTranscript = '';
                     
-                    case 'ACTIVE':
-                        this.micBtn.classList.add('active');
-                        if (this.isPlayingAudio) {
-                            this.micBtn.classList.add('speaking');
-                            this.micStatus.textContent = this.currentLang.micSpeaking;
-                            this.micStatus.classList.add('speaking');
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                            this.debug.log(`Final: "${transcript}"`, 'success');
                         } else {
-                            this.micBtn.classList.remove('speaking');
-                            this.micStatus.textContent = this.currentLang.micActive;
-                            this.micStatus.classList.add('listening');
+                            interimTranscript += transcript;
                         }
-                        break;
+                    }
                     
-                    case 'ERROR':
-                        this.micStatus.textContent = this.currentLang.micError;
-                        this.micStatus.classList.add('error');
-                        this.transcription.textContent = 'Si è verificato un errore. Clicca il microfono per riprovare.';
-                        break;
+                    this.transcription.innerHTML = 
+                        `<span style="color: #1976D2;">${finalTranscript}</span>` +
+                        `<span style="color: #90CAF9; opacity: 0.7;">${interimTranscript}</span>`;
                     
-                    case 'DISABLED':
-                        this.micStatus.textContent = this.currentLang.micDisabled;
-                        this.micStatus.classList.add('error');
-                        this.transcription.textContent = 'Microfono disabilitato. Ricarica la pagina per riprovare.';
-                        break;
-                }
+                    if (finalTranscript.trim()) {
+                        this.processVoiceInput(finalTranscript.trim());
+                    }
+                };
+                
+                this.recognition.onerror = (event) => {
+                    this.debug.log(`Recognition error: ${event.error}`, 'error');
+                    this.handleRecognitionError(event.error);
+                };
+                
+                this.recognition.onend = () => {
+                    const duration = this.recognitionStartTime ? Date.now() - this.recognitionStartTime : 0;
+                    this.debug.log(`Recognition ended after ${duration}ms`);
+                    this.isListening = false;
+                    this.updateMicUI();
+                    
+                    // Auto-restart se terminato troppo presto
+                    if (duration < 1000 && duration > 0) {
+                        this.debug.log('Terminato troppo presto, riavvio...', 'warning');
+                        setTimeout(() => {
+                            if (!this.isListening) {
+                                this.startListening();
+                            }
+                        }, 500);
+                    }
+                };
+                
+                this.recognition.onsoundstart = () => {
+                    this.debug.log('Sound detected');
+                };
+                
+                this.recognition.onsoundend = () => {
+                    this.debug.log('Sound ended');
+                };
+                
+                this.recognition.onnomatch = () => {
+                    this.debug.log('No match found');
+                };
+            }
 
-                // Aggiorna status bar globale
-                if (this.isApiConfigured) {
-                    this.statusBar.textContent = this.currentLang.statusReady + ' (API)';
-                    this.statusBar.className = 'status-bar connected';
+            setupEventListeners() {
+                // Microfono
+                this.micBtn.addEventListener('click', () => this.toggleMicrophone());
+                
+                // Test microfono
+                this.testMicBtn.addEventListener('click', () => this.testMicrophone());
+                
+                // Debug toggle
+                this.toggleDebugBtn.addEventListener('click', () => {
+                    this.debug.toggle();
+                    this.showToast(`Debug ${this.debug.enabled ? 'attivato' : 'disattivato'}`);
+                });
+                
+                // Chat
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                // Altri controlli
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+                this.clearBtn.addEventListener('click', () => this.clearChat());
+            }
+
+            async toggleMicrophone() {
+                this.debug.log('Toggle microfono clicked');
+                
+                if (!this.recognition) {
+                    this.debug.log('Recognition non inizializzato', 'error');
+                    this.showToast('Riconoscimento vocale non disponibile', 'error');
+                    return;
+                }
+                
+                if (this.isListening) {
+                    this.stopListening();
                 } else {
-                    this.statusBar.textContent = this.currentLang.statusDemo;
-                    this.statusBar.className = 'status-bar';
+                    await this.startListening();
                 }
             }
 
-            // === GESTIONE ERRORI (IDENTICA) ===
-
-            incrementErrorCount() {
-                const now = Date.now();
+            async startListening() {
+                this.debug.log('Avvio ascolto...');
                 
-                // Reset contatore se è passato troppo tempo dall'ultimo errore
-                if (now - this.lastErrorTime > this.errorResetInterval) {
-                    this.errorCount = 0;
-                }
-                
-                this.errorCount++;
-                this.lastErrorTime = now;
-                
-                console.log(`📊 Contatore errori: ${this.errorCount}/${this.maxErrors}`);
-            }
-
-            resetErrorCount() {
-                this.errorCount = 0;
-                this.lastErrorTime = 0;
-                console.log('✅ Contatore errori resettato');
-            }
-
-            // === AUDIO ELEVENLABS (IDENTICO) ===
-
-            initAudioControls() {
-                this.updateAudioControls();
-                console.log('🔊 Controlli audio ElevenLabs inizializzati');
-            }
-
-            updateAudioControls() {
-                if (this.audioToggle) {
-                    this.audioToggle.textContent = this.audioEnabled ? '🔊' : '🔇';
-                    this.audioToggle.className = `audio-control-btn ${this.audioEnabled ? 'active' : 'muted'}`;
-                    this.audioToggle.title = this.audioEnabled ? 'Disattiva audio' : 'Attiva audio';
-                }
-                
-                if (this.volumeControl) {
-                    const volumeLevel = this.audioVolume > 0.7 ? '🔊' : this.audioVolume > 0.3 ? '🔉' : '🔈';
-                    this.volumeControl.textContent = volumeLevel;
-                }
-            }
-
-            toggleAudio() {
-                this.audioEnabled = !this.audioEnabled;
-                localStorage.setItem('aluia_audio_enabled', this.audioEnabled.toString());
-                this.updateAudioControls();
-                
-                if (!this.audioEnabled && this.currentAudio) {
-                    this.stopCurrentAudio();
-                }
-                
-                this.showToast(this.audioEnabled ? 'Audio attivato' : 'Audio disattivato', 'success');
-                console.log('🔊 Audio toggled:', this.audioEnabled);
-            }
-
-            cycleVolume() {
-                const volumes = [0.2, 0.5, 0.8, 1.0];
-                const currentIndex = volumes.findIndex(v => Math.abs(v - this.audioVolume) < 0.1);
-                const nextIndex = (currentIndex + 1) % volumes.length;
-                
-                this.audioVolume = volumes[nextIndex];
-                localStorage.setItem('aluia_audio_volume', this.audioVolume.toString());
-                this.updateAudioControls();
-                
-                if (this.currentAudio) {
-                    this.currentAudio.volume = this.audioVolume;
-                }
-                
-                this.showToast(`Volume: ${Math.round(this.audioVolume * 100)}%`, 'success');
-                console.log('🎚️ Volume changed:', this.audioVolume);
-            }
-
-            stopCurrentAudio() {
-                if (this.currentAudio) {
-                    this.currentAudio.pause();
-                    this.currentAudio.currentTime = 0;
-                    this.currentAudio = null;
-                    this.isPlayingAudio = false;
-                    
-                    // Aggiorna UI
-                    this.updateUI();
-                    
-                    console.log('🔇 Audio fermato');
-                }
-            }
-
-            async speakText(text) {
-                if (!this.audioEnabled || !text.trim()) {
-                    console.log('🔇 Audio disabilitato o testo vuoto');
-                    return;
-                }
-
-                this.stopCurrentAudio();
-
                 try {
-                    console.log('🗣️ Tentativo sintesi audio ElevenLabs...');
+                    // Verifica permessi prima
+                    this.debug.log('Richiedo permessi microfono...');
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.debug.log('Permessi ottenuti', 'success');
                     
-                    this.isPlayingAudio = true;
-                    this.updateUI();
+                    // Ferma lo stream subito dopo (serve solo per i permessi)
+                    stream.getTracks().forEach(track => track.stop());
                     
-                    const response = await fetch('/api/elevenlabs-tts', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            text: text,
-                            voice_id: this.elevenLabsVoiceId
-                        })
-                    });
-
-                    if (!response.ok) {
-                        if (response.status === 404) {
-                            console.log('⚠️ Endpoint ElevenLabs non configurato, disabilito audio');
-                            this.audioEnabled = false;
-                            localStorage.setItem('aluia_audio_enabled', 'false');
-                            this.updateAudioControls();
-                            throw new Error('Endpoint audio non configurato');
-                        }
-                        throw new Error(`Errore API ElevenLabs: ${response.status}`);
-                    }
-
-                    const audioBlob = await response.blob();
-                    const audioUrl = URL.createObjectURL(audioBlob);
+                    // Avvia recognition
+                    this.recognition.start();
+                    this.debug.log('Recognition.start() chiamato');
                     
-                    this.currentAudio = new Audio(audioUrl);
-                    this.currentAudio.volume = this.audioVolume;
-
-                    this.currentAudio.onended = () => {
-                        console.log('✅ Audio completato');
-                        this.isPlayingAudio = false;
-                        this.updateUI();
-                        
-                        // Riavvia riconoscimento se era attivo
-                        if (this.micState === 'ACTIVE') {
-                            this.restartRecognition();
-                        }
-                        
-                        URL.revokeObjectURL(audioUrl);
-                        this.currentAudio = null;
-                    };
-
-                    this.currentAudio.onerror = (error) => {
-                        console.error('❌ Errore riproduzione audio:', error);
-                        this.isPlayingAudio = false;
-                        this.updateUI();
-                        URL.revokeObjectURL(audioUrl);
-                        this.currentAudio = null;
-                    };
-
-                    await this.currentAudio.play();
-                    console.log('🔊 Audio riprodotto con successo');
-
                 } catch (error) {
-                    console.error('❌ Errore sintesi audio:', error);
-                    this.isPlayingAudio = false;
-                    this.updateUI();
+                    this.debug.log(`Errore avvio: ${error.message}`, 'error');
                     
-                    // Non mostrare toast per endpoint mancante
-                    if (!error.message.includes('non configurato')) {
-                        this.showToast('Errore audio temporaneo', 'warning');
+                    if (error.name === 'NotAllowedError') {
+                        this.showToast('Permesso microfono negato. Abilita il microfono nelle impostazioni.', 'error');
+                    } else if (error.name === 'NotFoundError') {
+                        this.showToast('Nessun microfono trovato', 'error');
+                    } else {
+                        this.showToast(`Errore: ${error.message}`, 'error');
                     }
                 }
             }
 
-            // === ELABORAZIONE VOCALE (IDENTICA) ===
-
-            async processVoiceInput(text) {
-                if (this.isProcessing || !text.trim()) {
-                    return;
-                }
+            stopListening() {
+                this.debug.log('Stop ascolto');
                 
-                console.log('🗣️ Elaborando input vocale:', text);
-                this.isProcessing = true;
-                
-                // Ferma il microfono durante l'elaborazione
-                if (this.recognition && this.micState === 'ACTIVE') {
+                if (this.recognition) {
                     try {
                         this.recognition.stop();
-                    } catch (e) {
-                        console.warn('⚠️ Errore stop recognition per processing:', e);
+                        this.debug.log('Recognition.stop() chiamato');
+                    } catch (error) {
+                        this.debug.log(`Errore stop: ${error.message}`, 'error');
                     }
-                }
-                
-                try {
-                    this.addMessage('user', text);
-                    await this.sendToAssistant(text);
-                } catch (error) {
-                    console.error('❌ Errore processamento vocale:', error);
-                    this.showToast('Errore elaborazione messaggio vocale', 'error');
-                } finally {
-                    this.isProcessing = false;
                 }
             }
 
-            // === CHAT (IDENTICA) ===
+            async testMicrophone() {
+                this.debug.log('=== TEST MICROFONO INIZIATO ===');
+                
+                try {
+                    // Test 1: getUserMedia
+                    this.debug.log('Test 1: getUserMedia...');
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.debug.log('✅ getUserMedia OK', 'success');
+                    
+                    // Test 2: Analizza stream
+                    const audioTracks = stream.getAudioTracks();
+                    this.debug.log(`Audio tracks: ${audioTracks.length}`);
+                    audioTracks.forEach((track, i) => {
+                        this.debug.log(`Track ${i}: ${track.label} - ${track.readyState}`);
+                    });
+                    
+                    // Test 3: Audio context per volume
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const analyser = audioContext.createAnalyser();
+                    const microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    
+                    analyser.fftSize = 256;
+                    const bufferLength = analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+                    
+                    let maxVolume = 0;
+                    const checkVolume = () => {
+                        analyser.getByteFrequencyData(dataArray);
+                        const volume = Math.max(...dataArray);
+                        if (volume > maxVolume) maxVolume = volume;
+                    };
+                    
+                    // Monitora per 3 secondi
+                    this.showToast('Parla nel microfono per 3 secondi...', 'warning');
+                    const interval = setInterval(checkVolume, 100);
+                    
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        stream.getTracks().forEach(track => track.stop());
+                        audioContext.close();
+                        
+                        this.debug.log(`Volume massimo rilevato: ${maxVolume}`, maxVolume > 50 ? 'success' : 'error');
+                        
+                        if (maxVolume > 50) {
+                            this.showToast('✅ Microfono funzionante!', 'success');
+                        } else {
+                            this.showToast('⚠️ Audio non rilevato o troppo basso', 'warning');
+                        }
+                    }, 3000);
+                    
+                } catch (error) {
+                    this.debug.log(`❌ Test fallito: ${error.name} - ${error.message}`, 'error');
+                    this.showToast(`Test fallito: ${error.message}`, 'error');
+                }
+                
+                this.debug.log('=== TEST COMPLETATO ===');
+            }
+
+            updateMicUI() {
+                if (this.isListening) {
+                    this.micBtn.classList.add('active');
+                    this.micBtn.classList.remove('error');
+                    this.micStatus.textContent = '🎧 Sto ascoltando... Parla pure!';
+                    this.micStatus.classList.add('listening');
+                    this.micStatus.classList.remove('error');
+                } else {
+                    this.micBtn.classList.remove('active');
+                    this.micStatus.textContent = 'Clicca per attivare il microfono';
+                    this.micStatus.classList.remove('listening');
+                }
+            }
+
+            handleRecognitionError(error) {
+                let message = '';
+                
+                switch(error) {
+                    case 'not-allowed':
+                        message = 'Permesso microfono negato. Abilita il microfono nelle impostazioni.';
+                        break;
+                    case 'no-speech':
+                        message = 'Nessun parlato rilevato';
+                        // Non è un vero errore, solo informativo
+                        this.debug.log(message, 'warning');
+                        return;
+                    case 'audio-capture':
+                        message = 'Impossibile accedere al microfono';
+                        break;
+                    case 'network':
+                        message = 'Errore di rete';
+                        break;
+                    case 'aborted':
+                        message = 'Riconoscimento interrotto';
+                        break;
+                    default:
+                        message = `Errore: ${error}`;
+                }
+                
+                this.debug.log(`Errore recognition: ${message}`, 'error');
+                this.micStatus.textContent = '❌ ' + message;
+                this.micStatus.classList.add('error');
+                this.micBtn.classList.add('error');
+                
+                setTimeout(() => {
+                    this.updateMicUI();
+                }, 5000);
+            }
+
+            processVoiceInput(text) {
+                this.debug.log(`Processo testo vocale: "${text}"`);
+                this.addMessage('user', text);
+                this.transcription.innerHTML = 'La trascrizione in tempo reale apparirà qui...';
+                this.sendToAssistant(text);
+            }
 
             sendMessage() {
                 const message = this.chatInput.value.trim();
                 if (!message) return;
-
-                console.log('💬 Invio messaggio:', message);
-                this.chatInput.value = '';
+                
                 this.addMessage('user', message);
+                this.chatInput.value = '';
                 this.sendToAssistant(message);
-            }
-
-            async sendToAssistant(message) {
-                this.showTyping();
-                
-                try {
-                    if (this.isApiConfigured) {
-                        console.log('🔑 Tentativo con API OpenAI...');
-                        
-                        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${this.apiKey}`
-                            },
-                            body: JSON.stringify({
-                                model: 'gpt-3.5-turbo',
-                                messages: [
-                                    {
-                                        role: 'system',
-                                        content: this.currentLang.systemPrompt // USA PROMPT IN LINGUA CORRETTA
-                                    },
-                                    ...this.conversationHistory,
-                                    { role: 'user', content: message }
-                                ],
-                                temperature: 0.7,
-                                max_tokens: 500
-                            })
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`Errore API: ${response.status}`);
-                        }
-
-                        const data = await response.json();
-                        const reply = data.choices[0].message.content;
-
-                        console.log('✅ Risposta OpenAI ricevuta');
-                        this.hideTyping();
-                        this.addMessage('assistant', reply);
-                        
-                        // Parla la risposta se audio abilitato
-                        if (this.audioEnabled) {
-                            await this.speakText(reply);
-                        }
-                        
-                        this.conversationHistory.push(
-                            { role: 'user', content: message },
-                            { role: 'assistant', content: reply }
-                        );
-                        
-                        if (this.conversationHistory.length > 20) {
-                            this.conversationHistory = this.conversationHistory.slice(-20);
-                        }
-                        return;
-                    }
-                } catch (error) {
-                    console.log('⚠️ API non disponibile:', error.message);
-                    this.showToast('Errore connessione API: modalità demo attivata', 'warning');
-                }
-                
-                // Modalità demo
-                this.hideTyping();
-                
-                // Simula elaborazione
-                await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-                
-                const demoReply = this.getDemoResponse(message);
-                this.addMessage('assistant', demoReply);
-                
-                // Parla la risposta se audio abilitato
-                if (this.audioEnabled) {
-                    await this.speakText(demoReply);
-                }
-                
-                console.log('💡 Risposta demo inviata');
-            }
-
-            getDemoResponse(message) {
-                const msg = message.toLowerCase();
-                
-                if (msg.includes('farmi male') || msg.includes('suicid') || msg.includes('morire')) {
-                    return '💙 Sono profondamente preoccupato per quello che stai provando. Per favore, non restare solo con questi pensieri. Ci sono persone pronte ad aiutarti SUBITO:\n\n📞 Telefono Amico Italia: 800.833.833\n📞 SNS 24 Portogallo: 808 24 24 24\n\nLa tua vita ha valore. Parliamone insieme, sono qui per te.';
-                } else if (msg.includes('ansia') || msg.includes('panic') || msg.includes('paura')) {
-                    return '😌 Capisco che l\'ansia può essere travolgente. Proviamo una tecnica di respirazione:\n\n1. Inspira per 4 secondi\n2. Trattieni per 4 secondi\n3. Espira per 6 secondi\n4. Ripeti 5 volte\n\nCosa ti preoccupa di più in questo momento?';
-                } else if (msg.includes('depress') || msg.includes('triste') || msg.includes('solo')) {
-                    return '💙 Mi dispiace che ti senti così. La depressione è difficile, ma non sei solo. Ogni piccolo passo conta. Hai pensato di parlare con qualcuno di fiducia?';
-                } else if (msg.includes('ciao') || msg.includes('salve') || msg.includes('buongiorno')) {
-                    return '👋 Ciao! Sono Alu e sono felice che tu sia qui. Come ti senti oggi? Sono qui per ascoltarti senza giudizio.';
-                } else if (msg.includes('grazie')) {
-                    return '😊 Di nulla! È un onore supportarti. Ricorda che chiedere aiuto è coraggio. Come ti senti ora?';
-                } else {
-                    return '🤗 Ti ascolto con attenzione. Quello che provi è importante. Vuoi raccontarmi di più? Ricorda: ogni giorno è un nuovo inizio. 💙';
-                }
             }
 
             addMessage(type, content) {
@@ -1929,9 +965,34 @@
                 
                 this.chatContainer.appendChild(messageDiv);
                 this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+            }
+
+            async sendToAssistant(message) {
+                this.showTyping();
                 
-                if ('vibrate' in navigator && type === 'assistant') {
-                    navigator.vibrate(50);
+                // Simula risposta dopo un breve ritardo
+                setTimeout(() => {
+                    const reply = this.getDemoResponse(message);
+                    this.hideTyping();
+                    this.addMessage('assistant', reply);
+                }, 1500);
+            }
+
+            getDemoResponse(message) {
+                const msg = message.toLowerCase();
+                
+                if (msg.includes('ciao') || msg.includes('salve')) {
+                    return '😊 Ciao! Come ti senti oggi? Sono qui per ascoltarti.';
+                } else if (msg.includes('microfono') || msg.includes('non funziona')) {
+                    return '🔧 Se il microfono non funziona, verifica di aver dato i permessi al browser e di usare HTTPS. Prova il pulsante "Test Microfono" per verificare.';
+                } else if (msg.includes('ansia')) {
+                    return '💙 L\'ansia può essere difficile. Proviamo a respirare insieme: inspira per 4, trattieni per 4, espira per 6.';
+                } else if (msg.includes('triste')) {
+                    return '🤗 Mi dispiace che tu ti senta così. Sono qui per te. Vuoi parlarne?';
+                } else if (msg.includes('grazie')) {
+                    return '😊 Di nulla! È un piacere poterti aiutare.';
+                } else {
+                    return '💙 Ti ascolto. Dimmi di più su come ti senti.';
                 }
             }
 
@@ -1944,48 +1005,21 @@
                 this.typingIndicator.style.display = 'none';
             }
 
-            // === ADMIN (IDENTICO) ===
-
-            showAdminModal() {
-                document.getElementById('apiKey').value = '';
-                document.getElementById('assistantId').value = '';
-                this.adminModal.style.display = 'block';
-            }
-
-            hideAdminModal() {
-                this.adminModal.style.display = 'none';
-            }
-
-            saveAdminConfig() {
-                const apiKey = document.getElementById('apiKey').value.trim();
-                
-                if (!apiKey) {
-                    this.showToast('API Key richiesta', 'error');
-                    return;
+            clearChat() {
+                if (confirm('Vuoi davvero cancellare tutta la conversazione?')) {
+                    this.chatContainer.innerHTML = `
+                        <div class="message assistant">
+                            👋 Nuova conversazione iniziata. Come posso aiutarti?
+                        </div>
+                    `;
+                    this.showToast('Chat cancellata', 'success');
                 }
-                
-                if (!apiKey.startsWith('sk-')) {
-                    this.showToast('API Key non valida (deve iniziare con sk-)', 'error');
-                    return;
-                }
-                
-                this.apiKey = apiKey;
-                localStorage.setItem('aluia_api_key', this.apiKey);
-                this.isApiConfigured = true;
-                
-                this.updateUI();
-                this.hideAdminModal();
-                this.showToast('Configurazione salvata! API OpenAI attivata.', 'success');
-                console.log('✅ API configurata');
             }
-
-            // === TEMA (IDENTICO) ===
 
             toggleTheme() {
                 this.isDarkMode = !this.isDarkMode;
                 localStorage.setItem('aluia_theme', this.isDarkMode ? 'dark' : 'light');
                 this.applyTheme();
-                this.showToast(`Tema ${this.isDarkMode ? 'scuro' : 'chiaro'} attivato`, 'success');
             }
 
             applyTheme() {
@@ -1998,39 +1032,25 @@
                 }
             }
 
-            // === PRIVACY (IDENTICO) ===
-
-            showPrivacyInfo() {
-                this.showToast('Tutte le conversazioni sono private e sicure. I dati non vengono salvati.', 'success');
-            }
-
-            // === UTILITY (IDENTICHE) ===
-
-            clearTimeouts() {
-                if (this.stateTimeout) {
-                    clearTimeout(this.stateTimeout);
-                    this.stateTimeout = null;
-                }
-            }
-
-            startHealthCheck() {
-                this.healthCheckInterval = setInterval(() => {
-                    this.performHealthCheck();
-                }, 30000); // Ogni 30 secondi
-            }
-
-            performHealthCheck() {
-                if (this.micState === 'ACTIVE' && this.recognition) {
-                    console.log('🏥 Health check - microfono OK');
-                }
-            }
-
             showToast(message, type = 'success') {
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
                 toast.textContent = message;
                 document.body.appendChild(toast);
-
+                
                 setTimeout(() => toast.classList.add('show'), 100);
                 setTimeout(() => {
-                    toast
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+            }
+        }
+
+        // Avvia l'applicazione
+        document.addEventListener('DOMContentLoaded', () => {
+            window.aluIA = new AluIA();
+            console.log('🚀 AluIA avviata con debug!');
+        });
+    </script>
+</body>
+</html>
